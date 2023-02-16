@@ -45,6 +45,11 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               name: 'QR_Scanner',
               path: 'qRScanner',
               builder: (context, params) => QRScannerWidget(),
+            ),
+            FFRoute(
+              name: 'Type_Creator',
+              path: 'typeCreator',
+              builder: (context, params) => TypeCreatorWidget(),
             )
           ].map((r) => r.toRoute(appStateNotifier)).toList(),
         ).toRoute(appStateNotifier),
