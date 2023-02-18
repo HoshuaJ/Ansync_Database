@@ -85,7 +85,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                 ),
               ),
               Align(
-                alignment: AlignmentDirectional(-0.08, -0.7),
+                alignment: AlignmentDirectional(-0.28, -0.68),
                 child: Text(
                   'Research & Development | Product Design | On Site Manufacturing',
                   style: FlutterFlowTheme.of(context).bodyText1.override(

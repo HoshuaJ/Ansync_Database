@@ -119,8 +119,8 @@ class _QRScannerWidgetState extends State<QRScannerWidget> {
                       },
                       text: 'Scan',
                       options: FFButtonOptions(
-                        width: 350,
-                        height: 150,
+                        width: 150,
+                        height: 50,
                         color: Color(0xFF45D239),
                         textStyle:
                             FlutterFlowTheme.of(context).subtitle2.override(

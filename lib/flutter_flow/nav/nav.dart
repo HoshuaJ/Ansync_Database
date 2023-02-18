@@ -29,27 +29,37 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
       initialLocation: '/',
       debugLogDiagnostics: true,
       refreshListenable: appStateNotifier,
-      errorBuilder: (context, _) => HomePageWidget(),
+      errorBuilder: (context, _) => QRScannerWidget(),
       routes: [
         FFRoute(
           name: '_initialize',
           path: '/',
-          builder: (context, _) => HomePageWidget(),
+          builder: (context, _) => QRScannerWidget(),
           routes: [
-            FFRoute(
-              name: 'HomePage',
-              path: 'homePage',
-              builder: (context, params) => HomePageWidget(),
-            ),
             FFRoute(
               name: 'QR_Scanner',
               path: 'qRScanner',
               builder: (context, params) => QRScannerWidget(),
             ),
             FFRoute(
+              name: 'HomePage',
+              path: 'homePage',
+              builder: (context, params) => HomePageWidget(),
+            ),
+            FFRoute(
               name: 'Type_Creator',
               path: 'typeCreator',
               builder: (context, params) => TypeCreatorWidget(),
+            ),
+            FFRoute(
+              name: 'Type_Choice',
+              path: 'typeChoice',
+              builder: (context, params) => TypeChoiceWidget(),
+            ),
+            FFRoute(
+              name: 'Testpage',
+              path: 'testpage',
+              builder: (context, params) => TestpageWidget(),
             )
           ].map((r) => r.toRoute(appStateNotifier)).toList(),
         ).toRoute(appStateNotifier),
