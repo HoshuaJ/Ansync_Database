@@ -1,3 +1,4 @@
+import '../auth/auth_util.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
@@ -129,11 +130,37 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                   options: FFButtonOptions(
                     width: 350,
                     height: 150,
-                    color: Color(0xFF45D239),
+                    color: FlutterFlowTheme.of(context).primaryColor,
                     textStyle: FlutterFlowTheme.of(context).subtitle2.override(
                           fontFamily: 'Poppins',
                           color: Colors.white,
                           fontSize: 40,
+                        ),
+                    borderSide: BorderSide(
+                      color: Colors.transparent,
+                      width: 1,
+                    ),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+              ),
+              Align(
+                alignment: AlignmentDirectional(0, 0.76),
+                child: FFButtonWidget(
+                  onPressed: () async {
+                    GoRouter.of(context).prepareAuthEvent();
+                    await signOut();
+
+                    context.goNamedAuth('LoginPage', mounted);
+                  },
+                  text: 'Logout',
+                  options: FFButtonOptions(
+                    width: 130,
+                    height: 40,
+                    color: FlutterFlowTheme.of(context).primaryColor,
+                    textStyle: FlutterFlowTheme.of(context).subtitle2.override(
+                          fontFamily: 'Poppins',
+                          color: Colors.white,
                         ),
                     borderSide: BorderSide(
                       color: Colors.transparent,

@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "509605436851",
+    "project_id": "ansync-database",
+    "storage_bucket": "ansync-database.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:509605436851:android:39e1c634f9c82997117fc6",
+        "android_client_info": {
+          "package_name": "com.mycompany.ansynclabsdatabaseversion1"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "509605436851-325nmfhbg739j2m4hnpgfo93pch3gr6i.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mycompany.ansynclabsdatabaseversion1",
+            "certificate_hash": "9bbb3186b2189ef16d8f272bdab59362c395cbb4"
+          }
+        },
+        {
+          "client_id": "509605436851-n7tsqmcpvp2055vr4punm0lq2i3vq98p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC0PvEfbh2g3FrFDSka2DKwwPOy4CLJLWg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "509605436851-n7tsqmcpvp2055vr4punm0lq2i3vq98p.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "509605436851-amgjekaafjh64ea72u3f10htqe9744ir.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.mycompany.ansynclabsdatabaseversion1"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
