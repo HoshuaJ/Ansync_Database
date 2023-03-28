@@ -69,33 +69,18 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
       debugLogDiagnostics: true,
       refreshListenable: appStateNotifier,
       errorBuilder: (context, _) =>
-          appStateNotifier.loggedIn ? HomePageWidget() : LoginPageWidget(),
+          appStateNotifier.loggedIn ? NavBarPage() : TestpageWidget(),
       routes: [
         FFRoute(
           name: '_initialize',
           path: '/',
           builder: (context, _) =>
-              appStateNotifier.loggedIn ? HomePageWidget() : LoginPageWidget(),
+              appStateNotifier.loggedIn ? NavBarPage() : TestpageWidget(),
           routes: [
             FFRoute(
-              name: 'HomePage',
-              path: 'homePage',
-              builder: (context, params) => HomePageWidget(),
-            ),
-            FFRoute(
-              name: 'QR_Scanner',
-              path: 'qRScanner',
-              builder: (context, params) => QRScannerWidget(),
-            ),
-            FFRoute(
-              name: 'Type_Creator',
-              path: 'typeCreator',
-              builder: (context, params) => TypeCreatorWidget(),
-            ),
-            FFRoute(
-              name: 'Type_Choice',
-              path: 'typeChoice',
-              builder: (context, params) => TypeChoiceWidget(),
+              name: 'Testpage',
+              path: 'testpage',
+              builder: (context, params) => TestpageWidget(),
             ),
             FFRoute(
               name: 'LoginPage',
@@ -103,13 +88,122 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               builder: (context, params) => LoginPageWidget(),
             ),
             FFRoute(
-              name: 'Testpage',
-              path: 'testpage',
-              builder: (context, params) => TestpageWidget(),
+              name: 'HomePage',
+              path: 'homePage',
+              builder: (context, params) => params.isEmpty
+                  ? NavBarPage(initialPage: 'HomePage')
+                  : HomePageWidget(),
+            ),
+            FFRoute(
+              name: 'QR_Scanner',
+              path: 'qRScanner',
+              builder: (context, params) => params.isEmpty
+                  ? NavBarPage(initialPage: 'QR_Scanner')
+                  : QRScannerWidget(),
+            ),
+            FFRoute(
+              name: 'TypeCreator',
+              path: 'typeCreator',
+              builder: (context, params) => TypeCreatorWidget(),
+            ),
+            FFRoute(
+              name: 'ThingPage',
+              path: 'ObjectPage',
+              builder: (context, params) => ThingPageWidget(),
+            ),
+            FFRoute(
+              name: 'User',
+              path: 'user',
+              builder: (context, params) => params.isEmpty
+                  ? NavBarPage(initialPage: 'User')
+                  : UserWidget(),
+            ),
+            FFRoute(
+              name: 'Admin',
+              path: 'Admin',
+              builder: (context, params) => AdminWidget(),
+            ),
+            FFRoute(
+              name: 'Type_ChoiceCopy',
+              path: 'typeChoiceCopy',
+              builder: (context, params) => TypeChoiceCopyWidget(
+                enteredName: params.getParam('enteredName', ParamType.String),
+                typeChosen: params.getParam('typeChosen', ParamType.String),
+                thingId: params.getParam('thingId', ParamType.String),
+              ),
+            ),
+            FFRoute(
+              name: 'ThingPageCopy',
+              path: 'ThingPageCopy',
+              asyncParams: {
+                'thingToDisplay': getDoc(['things'], ThingsRecord.serializer),
+              },
+              builder: (context, params) => ThingPageCopyWidget(
+                thingToDisplay:
+                    params.getParam('thingToDisplay', ParamType.Document),
+              ),
+            ),
+            FFRoute(
+              name: 'TypeCreatorCopy',
+              path: 'typeCreatorCopy',
+              builder: (context, params) => params.isEmpty
+                  ? NavBarPage(initialPage: 'TypeCreatorCopy')
+                  : TypeCreatorCopyWidget(),
+            ),
+            FFRoute(
+              name: 'TypeCreatorCopyCopy',
+              path: 'typeCreatorCopyCopy',
+              builder: (context, params) => params.isEmpty
+                  ? NavBarPage(initialPage: 'TypeCreatorCopyCopy')
+                  : TypeCreatorCopyCopyWidget(),
+            ),
+            FFRoute(
+              name: 'AdminCopy',
+              path: 'AdminCopy',
+              builder: (context, params) => AdminCopyWidget(
+                newType: params.getParam(
+                    'newType', ParamType.DocumentReference, false, ['types']),
+                enteredName: params.getParam('enteredName', ParamType.String),
+              ),
+            ),
+            FFRoute(
+              name: 'TypeCreatorCopyCopyCopy',
+              path: 'typeCreatorCopyCopyCopy',
+              asyncParams: {
+                'currentType': getDoc(['types'], TypesRecord.serializer),
+              },
+              builder: (context, params) => params.isEmpty
+                  ? NavBarPage(initialPage: 'TypeCreatorCopyCopyCopy')
+                  : TypeCreatorCopyCopyCopyWidget(
+                      currentType:
+                          params.getParam('currentType', ParamType.Document),
+                    ),
+            ),
+            FFRoute(
+              name: 'AdminCopyCopy',
+              path: 'AdminCopyCopy',
+              asyncParams: {
+                'existingType': getDoc(['types'], TypesRecord.serializer),
+              },
+              builder: (context, params) => AdminCopyCopyWidget(
+                enteredName: params.getParam('enteredName', ParamType.String),
+                existingType:
+                    params.getParam('existingType', ParamType.Document),
+              ),
+            ),
+            FFRoute(
+              name: 'TypeCreatorCopyCopyCopyCopy',
+              path: 'typeCreatorCopyCopyCopyCopy',
+              builder: (context, params) => params.isEmpty
+                  ? NavBarPage(initialPage: 'TypeCreatorCopyCopyCopyCopy')
+                  : TypeCreatorCopyCopyCopyCopyWidget(
+                      currentType: params.getParam('currentType',
+                          ParamType.DocumentReference, false, ['types']),
+                    ),
             )
           ].map((r) => r.toRoute(appStateNotifier)).toList(),
-        ).toRoute(appStateNotifier),
-      ],
+        ),
+      ].map((r) => r.toRoute(appStateNotifier)).toList(),
       urlPathStrategy: UrlPathStrategy.path,
     );
 
@@ -155,6 +249,16 @@ extension NavigationExtensions on BuildContext {
               queryParams: queryParams,
               extra: extra,
             );
+
+  void safePop() {
+    // If there is only one route on the stack, navigate to the initial
+    // page instead of popping.
+    if (GoRouter.of(this).routerDelegate.matches.length <= 1) {
+      go('/');
+    } else {
+      pop();
+    }
+  }
 }
 
 extension GoRouterExtensions on GoRouter {
@@ -166,6 +270,7 @@ extension GoRouterExtensions on GoRouter {
           : appState.updateNotifyOnAuthChange(false);
   bool shouldRedirect(bool ignoreRedirect) =>
       !ignoreRedirect && appState.hasRedirect();
+  void clearRedirectLocation() => appState.clearRedirectLocation();
   void setRedirectLocationIfUnset(String location) =>
       (routerDelegate.refreshListenable as AppStateNotifier)
           .updateNotifyOnAuthChange(false);
@@ -265,7 +370,7 @@ class FFRoute {
 
           if (requireAuth && !appStateNotifier.loggedIn) {
             appStateNotifier.setRedirectLocationIfUnset(state.location);
-            return '/loginPage';
+            return '/testpage';
           }
           return null;
         },
@@ -280,8 +385,8 @@ class FFRoute {
           final child = appStateNotifier.loading
               ? Center(
                   child: SizedBox(
-                    width: 50,
-                    height: 50,
+                    width: 50.0,
+                    height: 50.0,
                     child: CircularProgressIndicator(
                       color: FlutterFlowTheme.of(context).primaryColor,
                     ),

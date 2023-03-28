@@ -1,7 +1,7 @@
-import '../auth/auth_util.dart';
-import '../flutter_flow/flutter_flow_theme.dart';
-import '../flutter_flow/flutter_flow_util.dart';
-import '../flutter_flow/flutter_flow_widgets.dart';
+import '/auth/auth_util.dart';
+import '/flutter_flow/flutter_flow_theme.dart';
+import '/flutter_flow/flutter_flow_util.dart';
+import '/flutter_flow/flutter_flow_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -46,40 +46,68 @@ class _HomePageWidgetState extends State<HomePageWidget> {
           child: Stack(
             children: [
               Align(
-                alignment: AlignmentDirectional(0, 0),
+                alignment: AlignmentDirectional(0.0, 0.0),
                 child: Container(
                   width: double.infinity,
                   height: double.infinity,
                   decoration: BoxDecoration(
+                    color: FlutterFlowTheme.of(context).secondaryBackground,
+                  ),
+                ),
+              ),
+              Align(
+                alignment: AlignmentDirectional(0.15, -1.0),
+                child: Container(
+                  width: double.infinity,
+                  height: double.infinity,
+                  constraints: BoxConstraints(
+                    maxHeight: 250.0,
+                  ),
+                  decoration: BoxDecoration(
                     gradient: LinearGradient(
-                      colors: [
-                        FlutterFlowTheme.of(context).primaryColor,
-                        Color(0xFF39EFAE)
-                      ],
-                      stops: [0, 1],
-                      begin: AlignmentDirectional(0.1, -1),
-                      end: AlignmentDirectional(-0.1, 1),
+                      colors: [Color(0xC345D239), Colors.white],
+                      stops: [0.0, 1.0],
+                      begin: AlignmentDirectional(0.0, -1.0),
+                      end: AlignmentDirectional(0, 1.0),
                     ),
                   ),
                 ),
               ),
               Align(
-                alignment: AlignmentDirectional(0, -0.92),
+                alignment: AlignmentDirectional(0.0, 1.0),
+                child: Container(
+                  width: double.infinity,
+                  height: double.infinity,
+                  constraints: BoxConstraints(
+                    maxHeight: 250.0,
+                  ),
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [Colors.white, Color(0xC345D239)],
+                      stops: [0.0, 1.0],
+                      begin: AlignmentDirectional(0.0, -1.0),
+                      end: AlignmentDirectional(0, 1.0),
+                    ),
+                  ),
+                ),
+              ),
+              Align(
+                alignment: AlignmentDirectional(0.0, -0.92),
                 child: Row(
                   mainAxisSize: MainAxisSize.max,
                   children: [
                     Image.asset(
                       'assets/images/logoedit.png',
-                      width: 100,
-                      height: 100,
+                      width: 100.0,
+                      height: 100.0,
                       fit: BoxFit.cover,
                     ),
                     Text(
                       'Ansync Labs',
                       style: FlutterFlowTheme.of(context).bodyText1.override(
                             fontFamily: 'Poppins',
-                            color: Colors.white,
-                            fontSize: 43,
+                            color: Colors.black,
+                            fontSize: 43.0,
                           ),
                     ),
                   ],
@@ -91,8 +119,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                   'Research & Development | Product Design | On Site Manufacturing',
                   style: FlutterFlowTheme.of(context).bodyText1.override(
                         fontFamily: 'Poppins',
-                        color: Colors.white,
-                        fontSize: 11,
+                        color: Colors.black,
+                        fontSize: 11.0,
                       ),
                 ),
               ),
@@ -103,70 +131,88 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                     context.pushNamed('QR_Scanner');
                   },
                   text: 'QR Scanner',
+                  icon: Icon(
+                    Icons.qr_code,
+                    size: 40.0,
+                  ),
                   options: FFButtonOptions(
-                    width: 350,
-                    height: 150,
-                    color: Color(0xFF45D239),
+                    width: 350.0,
+                    height: 100.0,
+                    padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
+                    iconPadding:
+                        EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
+                    color: Color(0x00FFFFFF),
                     textStyle: FlutterFlowTheme.of(context).subtitle2.override(
                           fontFamily: 'Poppins',
-                          color: Colors.white,
-                          fontSize: 40,
+                          color: Colors.black,
+                          fontSize: 40.0,
                         ),
                     borderSide: BorderSide(
-                      color: Colors.transparent,
-                      width: 1,
+                      color: Colors.black,
+                      width: 5.0,
                     ),
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(25.0),
                   ),
                 ),
               ),
               Align(
-                alignment: AlignmentDirectional(0, 0.49),
+                alignment: AlignmentDirectional(0.0, 0.49),
                 child: FFButtonWidget(
-                  onPressed: () {
-                    print('Button pressed ...');
+                  onPressed: () async {
+                    context.pushNamed('TypeCreatorCopy');
                   },
                   text: 'Type Creator',
+                  icon: Icon(
+                    Icons.create_outlined,
+                    size: 30.0,
+                  ),
                   options: FFButtonOptions(
-                    width: 350,
-                    height: 150,
-                    color: FlutterFlowTheme.of(context).primaryColor,
+                    width: 350.0,
+                    height: 100.0,
+                    padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
+                    iconPadding:
+                        EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
+                    color: Color(0x00FFFFFF),
                     textStyle: FlutterFlowTheme.of(context).subtitle2.override(
                           fontFamily: 'Poppins',
-                          color: Colors.white,
-                          fontSize: 40,
+                          color: Colors.black,
+                          fontSize: 40.0,
                         ),
                     borderSide: BorderSide(
-                      color: Colors.transparent,
-                      width: 1,
+                      color: Colors.black,
+                      width: 5.0,
                     ),
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(25.0),
                   ),
                 ),
               ),
               Align(
-                alignment: AlignmentDirectional(0, 0.76),
+                alignment: AlignmentDirectional(0.0, 0.76),
                 child: FFButtonWidget(
                   onPressed: () async {
                     GoRouter.of(context).prepareAuthEvent();
                     await signOut();
+                    GoRouter.of(context).clearRedirectLocation();
 
-                    context.goNamedAuth('LoginPage', mounted);
+                    context.goNamedAuth('Testpage', mounted);
                   },
                   text: 'Logout',
                   options: FFButtonOptions(
-                    width: 130,
-                    height: 40,
-                    color: FlutterFlowTheme.of(context).primaryColor,
+                    width: 130.0,
+                    height: 40.0,
+                    padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
+                    iconPadding:
+                        EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
+                    color: Color(0x9AFFFFFF),
                     textStyle: FlutterFlowTheme.of(context).subtitle2.override(
                           fontFamily: 'Poppins',
-                          color: Colors.white,
+                          color: Colors.black,
                         ),
                     borderSide: BorderSide(
-                      color: Colors.transparent,
-                      width: 1,
+                      color: Colors.black,
+                      width: 3.0,
                     ),
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(8.0),
                   ),
                 ),
               ),

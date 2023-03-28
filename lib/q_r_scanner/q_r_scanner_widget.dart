@@ -1,6 +1,7 @@
-import '../flutter_flow/flutter_flow_theme.dart';
-import '../flutter_flow/flutter_flow_util.dart';
-import '../flutter_flow/flutter_flow_widgets.dart';
+import '/backend/backend.dart';
+import '/flutter_flow/flutter_flow_theme.dart';
+import '/flutter_flow/flutter_flow_util.dart';
+import '/flutter_flow/flutter_flow_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -44,32 +45,54 @@ class _QRScannerWidgetState extends State<QRScannerWidget> {
         child: GestureDetector(
           onTap: () => FocusScope.of(context).requestFocus(_unfocusNode),
           child: Align(
-            alignment: AlignmentDirectional(0, 0),
+            alignment: AlignmentDirectional(0.0, 0.0),
             child: Container(
               width: double.infinity,
               height: double.infinity,
               decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    FlutterFlowTheme.of(context).primaryColor,
-                    Color(0xFF39EFAE)
-                  ],
-                  stops: [0, 1],
-                  begin: AlignmentDirectional(0.1, -1),
-                  end: AlignmentDirectional(-0.1, 1),
-                ),
+                color: FlutterFlowTheme.of(context).secondaryBackground,
               ),
               child: Stack(
                 children: [
                   Align(
-                    alignment: AlignmentDirectional(0, -0.92),
+                    alignment: AlignmentDirectional(0.15, 1.0),
+                    child: Container(
+                      width: double.infinity,
+                      height: 250.0,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [Colors.white, Color(0xC345D239)],
+                          stops: [0.0, 1.0],
+                          begin: AlignmentDirectional(0.0, -1.0),
+                          end: AlignmentDirectional(0, 1.0),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Align(
+                    alignment: AlignmentDirectional(0.0, -1.0),
+                    child: Container(
+                      width: double.infinity,
+                      height: 250.0,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [Color(0xC345D239), Colors.white],
+                          stops: [0.0, 1.0],
+                          begin: AlignmentDirectional(0.0, -1.0),
+                          end: AlignmentDirectional(0, 1.0),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Align(
+                    alignment: AlignmentDirectional(0.0, -0.92),
                     child: Row(
                       mainAxisSize: MainAxisSize.max,
                       children: [
                         Image.asset(
                           'assets/images/logoedit.png',
-                          width: 100,
-                          height: 100,
+                          width: 100.0,
+                          height: 100.0,
                           fit: BoxFit.cover,
                         ),
                         Text(
@@ -77,8 +100,8 @@ class _QRScannerWidgetState extends State<QRScannerWidget> {
                           style:
                               FlutterFlowTheme.of(context).bodyText1.override(
                                     fontFamily: 'Poppins',
-                                    color: Colors.white,
-                                    fontSize: 43,
+                                    color: Colors.black,
+                                    fontSize: 43.0,
                                   ),
                         ),
                       ],
@@ -90,49 +113,126 @@ class _QRScannerWidgetState extends State<QRScannerWidget> {
                       'Research & Development | Product Design | On Site Manufacturing',
                       style: FlutterFlowTheme.of(context).bodyText1.override(
                             fontFamily: 'Poppins',
-                            color: Colors.white,
-                            fontSize: 11,
+                            color: Colors.black,
+                            fontSize: 11.0,
                           ),
                     ),
                   ),
                   Align(
-                    alignment: AlignmentDirectional(0, -0.25),
+                    alignment: AlignmentDirectional(0.0, -0.25),
                     child: Image.asset(
-                      'assets/images/clipart1948136.png',
-                      width: 350,
-                      height: 350,
+                      'assets/images/ansync.png',
+                      width: 350.0,
+                      height: 350.0,
                       fit: BoxFit.cover,
                     ),
                   ),
                   Align(
-                    alignment: AlignmentDirectional(0.05, 0.71),
-                    child: FFButtonWidget(
-                      onPressed: () async {
-                        _model.scan = await FlutterBarcodeScanner.scanBarcode(
-                          '#C62828', // scanning line color
-                          'Cancel', // cancel button text
-                          true, // whether to show the flash icon
-                          ScanMode.QR,
-                        );
+                    alignment: AlignmentDirectional(0.0, 0.6),
+                    child: FutureBuilder<List<ThingsRecord>>(
+                      future: queryThingsRecordOnce(
+                        singleRecord: true,
+                      ),
+                      builder: (context, snapshot) {
+                        // Customize what your widget looks like when it's loading.
+                        if (!snapshot.hasData) {
+                          return Center(
+                            child: SizedBox(
+                              width: 50.0,
+                              height: 50.0,
+                              child: CircularProgressIndicator(
+                                color:
+                                    FlutterFlowTheme.of(context).primaryColor,
+                              ),
+                            ),
+                          );
+                        }
+                        List<ThingsRecord> buttonThingsRecordList =
+                            snapshot.data!;
+                        final buttonThingsRecord =
+                            buttonThingsRecordList.isNotEmpty
+                                ? buttonThingsRecordList.first
+                                : null;
+                        return FFButtonWidget(
+                          onPressed: () async {
+                            _model.scan =
+                                await FlutterBarcodeScanner.scanBarcode(
+                              '#C62828', // scanning line color
+                              'Cancel', // cancel button text
+                              true, // whether to show the flash icon
+                              ScanMode.QR,
+                            );
 
-                        setState(() {});
+                            if (_model.scan ==
+                                buttonThingsRecord!.reference.id) {
+                              context.pushNamed(
+                                'ThingPageCopy',
+                                queryParams: {
+                                  'thingToDisplay': serializeParam(
+                                    buttonThingsRecord,
+                                    ParamType.Document,
+                                  ),
+                                }.withoutNulls,
+                                extra: <String, dynamic>{
+                                  'thingToDisplay': buttonThingsRecord,
+                                },
+                              );
+                            } else {
+                              context.pushNamed(
+                                'Type_ChoiceCopy',
+                                queryParams: {
+                                  'thingId': serializeParam(
+                                    _model.scan,
+                                    ParamType.String,
+                                  ),
+                                }.withoutNulls,
+                              );
+                            }
+
+                            setState(() {});
+                          },
+                          text: 'Scan',
+                          options: FFButtonOptions(
+                            width: 150.0,
+                            height: 50.0,
+                            padding: EdgeInsetsDirectional.fromSTEB(
+                                0.0, 0.0, 0.0, 0.0),
+                            iconPadding: EdgeInsetsDirectional.fromSTEB(
+                                0.0, 0.0, 0.0, 0.0),
+                            color: Color(0x0045D239),
+                            textStyle:
+                                FlutterFlowTheme.of(context).subtitle2.override(
+                                      fontFamily: 'Poppins',
+                                      color: Colors.black,
+                                      fontSize: 60.0,
+                                    ),
+                            borderSide: BorderSide(
+                              color: Colors.black,
+                              width: 3.0,
+                            ),
+                            borderRadius: BorderRadius.circular(8.0),
+                          ),
+                        );
                       },
-                      text: 'Scan',
-                      options: FFButtonOptions(
-                        width: 150,
-                        height: 50,
-                        color: Color(0xFF45D239),
-                        textStyle:
-                            FlutterFlowTheme.of(context).subtitle2.override(
-                                  fontFamily: 'Poppins',
-                                  color: Colors.white,
-                                  fontSize: 60,
-                                ),
-                        borderSide: BorderSide(
-                          color: Colors.transparent,
-                          width: 1,
+                    ),
+                  ),
+                  Align(
+                    alignment: AlignmentDirectional(-0.95, -1.0),
+                    child: Padding(
+                      padding:
+                          EdgeInsetsDirectional.fromSTEB(4.0, 5.0, 0.0, 0.0),
+                      child: InkWell(
+                        onTap: () async {
+                          context.pushNamed('HomePage');
+                        },
+                        child: Text(
+                          'Back',
+                          style: FlutterFlowTheme.of(context).title2.override(
+                                fontFamily: 'Poppins',
+                                color: Colors.black,
+                                fontSize: 18.0,
+                              ),
                         ),
-                        borderRadius: BorderRadius.circular(8),
                       ),
                     ),
                   ),
