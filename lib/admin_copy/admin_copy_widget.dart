@@ -18,7 +18,7 @@ class AdminCopyWidget extends StatefulWidget {
     this.enteredName,
   }) : super(key: key);
 
-  final DocumentReference? newType;
+  final TypesRecord? newType;
   final String? enteredName;
 
   @override
@@ -235,47 +235,17 @@ class _AdminCopyWidgetState extends State<AdminCopyWidget> {
                   onPressed: () async {
                     final variableStatesCreateData =
                         createVariableStatesRecordData(
-                      state1: createVariableStateStruct(
-                        stateName: 'null',
-                        doButton1: 'null',
-                        doButton3: true,
-                        doButton4: 0,
-                        doButton5: getCurrentTimestamp,
-                        clearUnsetFields: false,
-                        create: true,
-                      ),
-                      state2: createVariableStateStruct(
-                        doButton1: 'null',
-                        doButton3: true,
-                        doButton4: 0,
-                        doButton5: getCurrentTimestamp,
-                        stateName: 'null',
-                        clearUnsetFields: false,
-                        create: true,
-                      ),
-                      state3: createVariableStateStruct(
-                        doButton1: 'null',
-                        doButton3: true,
-                        doButton4: 0,
-                        doButton5: getCurrentTimestamp,
-                        stateName: 'null',
-                        clearUnsetFields: false,
-                        create: true,
-                      ),
-                      state4: createVariableStateStruct(
-                        doButton1: 'null',
-                        doButton3: true,
-                        doButton4: 0,
-                        doButton5: getCurrentTimestamp,
-                        stateName: 'null',
-                        clearUnsetFields: false,
-                        create: true,
-                      ),
+                      doButton1: 'doButton1',
+                      doButton2: 'doButton2',
+                      doButton3: 'doButton3',
+                      doButton4: 'doButton4',
+                      stateName: 'State',
                     );
-                    await VariableStatesRecord.createDoc(widget.newType!)
+                    await VariableStatesRecord.createDoc(
+                            widget.newType!.reference)
                         .set(variableStatesCreateData);
                   },
-                  text: 'Create States',
+                  text: 'Create State',
                   options: FFButtonOptions(
                     width: 450.0,
                     height: 80.0,
@@ -305,9 +275,12 @@ class _AdminCopyWidgetState extends State<AdminCopyWidget> {
                       queryParams: {
                         'currentType': serializeParam(
                           widget.newType,
-                          ParamType.DocumentReference,
+                          ParamType.Document,
                         ),
                       }.withoutNulls,
+                      extra: <String, dynamic>{
+                        'currentType': widget.newType,
+                      },
                     );
                   },
                   text: 'Edit States',
@@ -331,31 +304,81 @@ class _AdminCopyWidgetState extends State<AdminCopyWidget> {
                   ),
                 ),
               ),
-              FFButtonWidget(
-                onPressed: () async {
-                  final typesUpdateData = createTypesRecordData(
-                    typeName: widget.enteredName,
-                  );
-                  await widget.newType!.update(typesUpdateData);
-                },
-                text: 'Enter',
-                options: FFButtonOptions(
-                  width: 130.0,
-                  height: 40.0,
-                  padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
-                  iconPadding:
-                      EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
-                  color: FlutterFlowTheme.of(context).primaryColor,
-                  textStyle: FlutterFlowTheme.of(context).subtitle2.override(
-                        fontFamily: 'Poppins',
-                        color: Colors.white,
-                      ),
-                  borderSide: BorderSide(
-                    color: Colors.transparent,
-                    width: 1.0,
-                  ),
-                  borderRadius: BorderRadius.circular(8.0),
+              StreamBuilder<List<TypesRecord>>(
+                stream: queryTypesRecord(
+                  singleRecord: true,
                 ),
+                builder: (context, snapshot) {
+                  // Customize what your widget looks like when it's loading.
+                  if (!snapshot.hasData) {
+                    return Center(
+                      child: SizedBox(
+                        width: 50.0,
+                        height: 50.0,
+                        child: CircularProgressIndicator(
+                          color: FlutterFlowTheme.of(context).primaryColor,
+                        ),
+                      ),
+                    );
+                  }
+                  List<TypesRecord> buttonTypesRecordList = snapshot.data!;
+                  // Return an empty Container when the item does not exist.
+                  if (snapshot.data!.isEmpty) {
+                    return Container();
+                  }
+                  final buttonTypesRecord = buttonTypesRecordList.isNotEmpty
+                      ? buttonTypesRecordList.first
+                      : null;
+                  return FFButtonWidget(
+                    onPressed: () async {
+                      if (_model.textController.text ==
+                          widget.newType!.typeName) {
+                        await showDialog(
+                          context: context,
+                          builder: (alertDialogContext) {
+                            return AlertDialog(
+                              title: Text('Type already exists!'),
+                              content: Text(
+                                  'Please enter a different name for new type.'),
+                              actions: [
+                                TextButton(
+                                  onPressed: () =>
+                                      Navigator.pop(alertDialogContext),
+                                  child: Text('Ok'),
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      } else {
+                        final typesUpdateData = createTypesRecordData(
+                          typeName: _model.textController.text,
+                        );
+                        await widget.newType!.reference.update(typesUpdateData);
+                      }
+                    },
+                    text: 'Enter',
+                    options: FFButtonOptions(
+                      width: 130.0,
+                      height: 40.0,
+                      padding:
+                          EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
+                      iconPadding:
+                          EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
+                      color: FlutterFlowTheme.of(context).primaryColor,
+                      textStyle:
+                          FlutterFlowTheme.of(context).subtitle2.override(
+                                fontFamily: 'Poppins',
+                                color: Colors.white,
+                              ),
+                      borderSide: BorderSide(
+                        color: Colors.transparent,
+                        width: 1.0,
+                      ),
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                  );
+                },
               ),
             ],
           ),

@@ -1,16 +1,20 @@
 import '/backend/backend.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/flutter_flow/flutter_flow_widgets.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'q_r_scanner_model.dart';
 export 'q_r_scanner_model.dart';
 
 class QRScannerWidget extends StatefulWidget {
-  const QRScannerWidget({Key? key}) : super(key: key);
+  const QRScannerWidget({
+    Key? key,
+    this.codeID,
+  }) : super(key: key);
+
+  final DocumentReference? codeID;
 
   @override
   _QRScannerWidgetState createState() => _QRScannerWidgetState();
@@ -26,6 +30,8 @@ class _QRScannerWidgetState extends State<QRScannerWidget> {
   void initState() {
     super.initState();
     _model = createModel(context, () => QRScannerModel());
+
+    _model.textController ??= TextEditingController();
   }
 
   @override
@@ -40,7 +46,7 @@ class _QRScannerWidgetState extends State<QRScannerWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: scaffoldKey,
-      backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: GestureDetector(
           onTap: () => FocusScope.of(context).requestFocus(_unfocusNode),
@@ -50,40 +56,10 @@ class _QRScannerWidgetState extends State<QRScannerWidget> {
               width: double.infinity,
               height: double.infinity,
               decoration: BoxDecoration(
-                color: FlutterFlowTheme.of(context).secondaryBackground,
+                color: Color(0xFFFFFDFD),
               ),
               child: Stack(
                 children: [
-                  Align(
-                    alignment: AlignmentDirectional(0.15, 1.0),
-                    child: Container(
-                      width: double.infinity,
-                      height: 250.0,
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [Colors.white, Color(0xC345D239)],
-                          stops: [0.0, 1.0],
-                          begin: AlignmentDirectional(0.0, -1.0),
-                          end: AlignmentDirectional(0, 1.0),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Align(
-                    alignment: AlignmentDirectional(0.0, -1.0),
-                    child: Container(
-                      width: double.infinity,
-                      height: 250.0,
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [Color(0xC345D239), Colors.white],
-                          stops: [0.0, 1.0],
-                          begin: AlignmentDirectional(0.0, -1.0),
-                          end: AlignmentDirectional(0, 1.0),
-                        ),
-                      ),
-                    ),
-                  ),
                   Align(
                     alignment: AlignmentDirectional(0.0, -0.92),
                     child: Row(
@@ -128,95 +104,6 @@ class _QRScannerWidgetState extends State<QRScannerWidget> {
                     ),
                   ),
                   Align(
-                    alignment: AlignmentDirectional(0.0, 0.6),
-                    child: FutureBuilder<List<ThingsRecord>>(
-                      future: queryThingsRecordOnce(
-                        singleRecord: true,
-                      ),
-                      builder: (context, snapshot) {
-                        // Customize what your widget looks like when it's loading.
-                        if (!snapshot.hasData) {
-                          return Center(
-                            child: SizedBox(
-                              width: 50.0,
-                              height: 50.0,
-                              child: CircularProgressIndicator(
-                                color:
-                                    FlutterFlowTheme.of(context).primaryColor,
-                              ),
-                            ),
-                          );
-                        }
-                        List<ThingsRecord> buttonThingsRecordList =
-                            snapshot.data!;
-                        final buttonThingsRecord =
-                            buttonThingsRecordList.isNotEmpty
-                                ? buttonThingsRecordList.first
-                                : null;
-                        return FFButtonWidget(
-                          onPressed: () async {
-                            _model.scan =
-                                await FlutterBarcodeScanner.scanBarcode(
-                              '#C62828', // scanning line color
-                              'Cancel', // cancel button text
-                              true, // whether to show the flash icon
-                              ScanMode.QR,
-                            );
-
-                            if (_model.scan ==
-                                buttonThingsRecord!.reference.id) {
-                              context.pushNamed(
-                                'ThingPageCopy',
-                                queryParams: {
-                                  'thingToDisplay': serializeParam(
-                                    buttonThingsRecord,
-                                    ParamType.Document,
-                                  ),
-                                }.withoutNulls,
-                                extra: <String, dynamic>{
-                                  'thingToDisplay': buttonThingsRecord,
-                                },
-                              );
-                            } else {
-                              context.pushNamed(
-                                'Type_ChoiceCopy',
-                                queryParams: {
-                                  'thingId': serializeParam(
-                                    _model.scan,
-                                    ParamType.String,
-                                  ),
-                                }.withoutNulls,
-                              );
-                            }
-
-                            setState(() {});
-                          },
-                          text: 'Scan',
-                          options: FFButtonOptions(
-                            width: 150.0,
-                            height: 50.0,
-                            padding: EdgeInsetsDirectional.fromSTEB(
-                                0.0, 0.0, 0.0, 0.0),
-                            iconPadding: EdgeInsetsDirectional.fromSTEB(
-                                0.0, 0.0, 0.0, 0.0),
-                            color: Color(0x0045D239),
-                            textStyle:
-                                FlutterFlowTheme.of(context).subtitle2.override(
-                                      fontFamily: 'Poppins',
-                                      color: Colors.black,
-                                      fontSize: 60.0,
-                                    ),
-                            borderSide: BorderSide(
-                              color: Colors.black,
-                              width: 3.0,
-                            ),
-                            borderRadius: BorderRadius.circular(8.0),
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                  Align(
                     alignment: AlignmentDirectional(-0.95, -1.0),
                     child: Padding(
                       padding:
@@ -234,6 +121,121 @@ class _QRScannerWidgetState extends State<QRScannerWidget> {
                               ),
                         ),
                       ),
+                    ),
+                  ),
+                  Align(
+                    alignment: AlignmentDirectional(0.0, 0.36),
+                    child: StreamBuilder<List<ThingsRecord>>(
+                      stream: queryThingsRecord(
+                        singleRecord: true,
+                      ),
+                      builder: (context, snapshot) {
+                        // Customize what your widget looks like when it's loading.
+                        if (!snapshot.hasData) {
+                          return Center(
+                            child: SizedBox(
+                              width: 50.0,
+                              height: 50.0,
+                              child: CircularProgressIndicator(
+                                color:
+                                    FlutterFlowTheme.of(context).primaryColor,
+                              ),
+                            ),
+                          );
+                        }
+                        List<ThingsRecord> textFieldThingsRecordList =
+                            snapshot.data!;
+                        final textFieldThingsRecord =
+                            textFieldThingsRecordList.isNotEmpty
+                                ? textFieldThingsRecordList.first
+                                : null;
+                        return TextFormField(
+                          controller: _model.textController,
+                          onFieldSubmitted: (_) async {
+                            if (textFieldThingsRecord!.codeID ==
+                                _model.textController.text) {
+                              context.pushNamed(
+                                'ThingPageCopy',
+                                queryParams: {
+                                  'thingToDisplay': serializeParam(
+                                    textFieldThingsRecord,
+                                    ParamType.Document,
+                                  ),
+                                }.withoutNulls,
+                                extra: <String, dynamic>{
+                                  'thingToDisplay': textFieldThingsRecord,
+                                },
+                              );
+                            } else {
+                              context.pushNamed(
+                                'Type_ChoiceCopy',
+                                queryParams: {
+                                  'scannedID': serializeParam(
+                                    _model.textController.text,
+                                    ParamType.String,
+                                  ),
+                                }.withoutNulls,
+                              );
+                            }
+                          },
+                          autofocus: true,
+                          obscureText: false,
+                          decoration: InputDecoration(
+                            hintText: '[test for thing]',
+                            hintStyle: FlutterFlowTheme.of(context)
+                                .bodyText2
+                                .override(
+                                  fontFamily: 'Poppins',
+                                  color:
+                                      FlutterFlowTheme.of(context).primaryText,
+                                ),
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Color(0x00000000),
+                                width: 1.0,
+                              ),
+                              borderRadius: const BorderRadius.only(
+                                topLeft: Radius.circular(4.0),
+                                topRight: Radius.circular(4.0),
+                              ),
+                            ),
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Color(0x00000000),
+                                width: 1.0,
+                              ),
+                              borderRadius: const BorderRadius.only(
+                                topLeft: Radius.circular(4.0),
+                                topRight: Radius.circular(4.0),
+                              ),
+                            ),
+                            errorBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Color(0x00000000),
+                                width: 1.0,
+                              ),
+                              borderRadius: const BorderRadius.only(
+                                topLeft: Radius.circular(4.0),
+                                topRight: Radius.circular(4.0),
+                              ),
+                            ),
+                            focusedErrorBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Color(0x00000000),
+                                width: 1.0,
+                              ),
+                              borderRadius: const BorderRadius.only(
+                                topLeft: Radius.circular(4.0),
+                                topRight: Radius.circular(4.0),
+                              ),
+                            ),
+                          ),
+                          style: FlutterFlowTheme.of(context).bodyText1,
+                          textAlign: TextAlign.center,
+                          validator: _model.textControllerValidator
+                              .asValidator(context),
+                        );
+                      },
                     ),
                   ),
                 ],

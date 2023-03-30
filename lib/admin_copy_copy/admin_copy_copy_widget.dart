@@ -235,48 +235,17 @@ class _AdminCopyCopyWidgetState extends State<AdminCopyCopyWidget> {
                   onPressed: () async {
                     final variableStatesCreateData =
                         createVariableStatesRecordData(
-                      state1: createVariableStateStruct(
-                        doButton1: 'null',
-                        doButton3: true,
-                        doButton4: 0,
-                        doButton5: getCurrentTimestamp,
-                        stateName: 'null',
-                        clearUnsetFields: false,
-                        create: true,
-                      ),
-                      state2: createVariableStateStruct(
-                        doButton1: 'null',
-                        doButton3: true,
-                        doButton4: 0,
-                        doButton5: getCurrentTimestamp,
-                        stateName: 'null',
-                        clearUnsetFields: false,
-                        create: true,
-                      ),
-                      state3: createVariableStateStruct(
-                        doButton1: 'null',
-                        doButton3: true,
-                        doButton4: 0,
-                        doButton5: getCurrentTimestamp,
-                        stateName: 'null',
-                        clearUnsetFields: false,
-                        create: true,
-                      ),
-                      state4: createVariableStateStruct(
-                        doButton1: 'null',
-                        doButton3: true,
-                        doButton4: 0,
-                        doButton5: getCurrentTimestamp,
-                        stateName: 'null',
-                        clearUnsetFields: false,
-                        create: true,
-                      ),
+                      doButton1: 'doButton1',
+                      doButton2: 'doButton2',
+                      doButton3: 'doButton3',
+                      doButton4: 'doButton4',
+                      stateName: 'State',
                     );
                     await VariableStatesRecord.createDoc(
                             widget.existingType!.reference)
                         .set(variableStatesCreateData);
                   },
-                  text: 'Create States',
+                  text: 'Create State',
                   options: FFButtonOptions(
                     width: 450.0,
                     height: 80.0,
@@ -338,7 +307,7 @@ class _AdminCopyCopyWidgetState extends State<AdminCopyCopyWidget> {
               FFButtonWidget(
                 onPressed: () async {
                   final typesUpdateData = createTypesRecordData(
-                    typeName: widget.enteredName,
+                    typeName: _model.textController.text,
                   );
                   await widget.existingType!.reference.update(typesUpdateData);
                 },

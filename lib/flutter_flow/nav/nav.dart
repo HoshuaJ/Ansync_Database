@@ -99,29 +99,20 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               path: 'qRScanner',
               builder: (context, params) => params.isEmpty
                   ? NavBarPage(initialPage: 'QR_Scanner')
-                  : QRScannerWidget(),
-            ),
-            FFRoute(
-              name: 'TypeCreator',
-              path: 'typeCreator',
-              builder: (context, params) => TypeCreatorWidget(),
+                  : QRScannerWidget(
+                      codeID: params.getParam('codeID',
+                          ParamType.DocumentReference, false, ['things']),
+                    ),
             ),
             FFRoute(
               name: 'ThingPage',
               path: 'ObjectPage',
-              builder: (context, params) => ThingPageWidget(),
-            ),
-            FFRoute(
-              name: 'User',
-              path: 'user',
-              builder: (context, params) => params.isEmpty
-                  ? NavBarPage(initialPage: 'User')
-                  : UserWidget(),
-            ),
-            FFRoute(
-              name: 'Admin',
-              path: 'Admin',
-              builder: (context, params) => AdminWidget(),
+              asyncParams: {
+                'thing': getDoc(['things'], ThingsRecord.serializer),
+              },
+              builder: (context, params) => ThingPageWidget(
+                thing: params.getParam('thing', ParamType.Document),
+              ),
             ),
             FFRoute(
               name: 'Type_ChoiceCopy',
@@ -129,7 +120,22 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               builder: (context, params) => TypeChoiceCopyWidget(
                 enteredName: params.getParam('enteredName', ParamType.String),
                 typeChosen: params.getParam('typeChosen', ParamType.String),
-                thingId: params.getParam('thingId', ParamType.String),
+                scannedID: params.getParam('scannedID', ParamType.String),
+              ),
+            ),
+            FFRoute(
+              name: 'Admin',
+              path: 'Admin',
+              asyncParams: {
+                'currentState': getDoc(['types', 'variableStates'],
+                    VariableStatesRecord.serializer),
+                'currentType': getDoc(['types'], TypesRecord.serializer),
+              },
+              builder: (context, params) => AdminWidget(
+                currentState:
+                    params.getParam('currentState', ParamType.Document),
+                enteredName: params.getParam('enteredName', ParamType.String),
+                currentType: params.getParam('currentType', ParamType.Document),
               ),
             ),
             FFRoute(
@@ -148,7 +154,10 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               path: 'typeCreatorCopy',
               builder: (context, params) => params.isEmpty
                   ? NavBarPage(initialPage: 'TypeCreatorCopy')
-                  : TypeCreatorCopyWidget(),
+                  : TypeCreatorCopyWidget(
+                      newType: params.getParam('newType',
+                          ParamType.DocumentReference, false, ['types']),
+                    ),
             ),
             FFRoute(
               name: 'TypeCreatorCopyCopy',
@@ -160,10 +169,24 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
             FFRoute(
               name: 'AdminCopy',
               path: 'AdminCopy',
+              asyncParams: {
+                'newType': getDoc(['types'], TypesRecord.serializer),
+              },
               builder: (context, params) => AdminCopyWidget(
-                newType: params.getParam(
-                    'newType', ParamType.DocumentReference, false, ['types']),
+                newType: params.getParam('newType', ParamType.Document),
                 enteredName: params.getParam('enteredName', ParamType.String),
+              ),
+            ),
+            FFRoute(
+              name: 'AdminCopyCopy',
+              path: 'AdminCopyCopy',
+              asyncParams: {
+                'existingType': getDoc(['types'], TypesRecord.serializer),
+              },
+              builder: (context, params) => AdminCopyCopyWidget(
+                enteredName: params.getParam('enteredName', ParamType.String),
+                existingType:
+                    params.getParam('existingType', ParamType.Document),
               ),
             ),
             FFRoute(
@@ -180,26 +203,32 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
                     ),
             ),
             FFRoute(
-              name: 'AdminCopyCopy',
-              path: 'AdminCopyCopy',
-              asyncParams: {
-                'existingType': getDoc(['types'], TypesRecord.serializer),
-              },
-              builder: (context, params) => AdminCopyCopyWidget(
-                enteredName: params.getParam('enteredName', ParamType.String),
-                existingType:
-                    params.getParam('existingType', ParamType.Document),
-              ),
-            ),
-            FFRoute(
               name: 'TypeCreatorCopyCopyCopyCopy',
               path: 'typeCreatorCopyCopyCopyCopy',
+              asyncParams: {
+                'currentType': getDoc(['types'], TypesRecord.serializer),
+              },
               builder: (context, params) => params.isEmpty
                   ? NavBarPage(initialPage: 'TypeCreatorCopyCopyCopyCopy')
                   : TypeCreatorCopyCopyCopyCopyWidget(
-                      currentType: params.getParam('currentType',
-                          ParamType.DocumentReference, false, ['types']),
+                      currentType:
+                          params.getParam('currentType', ParamType.Document),
                     ),
+            ),
+            FFRoute(
+              name: 'AdminCopy2',
+              path: 'AdminCopy2',
+              asyncParams: {
+                'currentState': getDoc(['types', 'variableStates'],
+                    VariableStatesRecord.serializer),
+                'currentType': getDoc(['types'], TypesRecord.serializer),
+              },
+              builder: (context, params) => AdminCopy2Widget(
+                currentState:
+                    params.getParam('currentState', ParamType.Document),
+                enteredName: params.getParam('enteredName', ParamType.String),
+                currentType: params.getParam('currentType', ParamType.Document),
+              ),
             )
           ].map((r) => r.toRoute(appStateNotifier)).toList(),
         ),

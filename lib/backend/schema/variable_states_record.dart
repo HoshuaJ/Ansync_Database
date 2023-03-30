@@ -11,13 +11,15 @@ abstract class VariableStatesRecord
   static Serializer<VariableStatesRecord> get serializer =>
       _$variableStatesRecordSerializer;
 
-  VariableStateStruct get state1;
+  String? get doButton1;
 
-  VariableStateStruct get state2;
+  String? get doButton2;
 
-  VariableStateStruct get state3;
+  String? get doButton3;
 
-  VariableStateStruct get state4;
+  String? get doButton4;
+
+  String? get stateName;
 
   @BuiltValueField(wireName: kDocumentReferenceField)
   DocumentReference? get ffRef;
@@ -26,10 +28,11 @@ abstract class VariableStatesRecord
   DocumentReference get parentReference => reference.parent.parent!;
 
   static void _initializeBuilder(VariableStatesRecordBuilder builder) => builder
-    ..state1 = VariableStateStructBuilder()
-    ..state2 = VariableStateStructBuilder()
-    ..state3 = VariableStateStructBuilder()
-    ..state4 = VariableStateStructBuilder();
+    ..doButton1 = ''
+    ..doButton2 = ''
+    ..doButton3 = ''
+    ..doButton4 = ''
+    ..stateName = '';
 
   static Query<Map<String, dynamic>> collection([DocumentReference? parent]) =>
       parent != null
@@ -59,33 +62,23 @@ abstract class VariableStatesRecord
 }
 
 Map<String, dynamic> createVariableStatesRecordData({
-  VariableStateStruct? state1,
-  VariableStateStruct? state2,
-  VariableStateStruct? state3,
-  VariableStateStruct? state4,
+  String? doButton1,
+  String? doButton2,
+  String? doButton3,
+  String? doButton4,
+  String? stateName,
 }) {
   final firestoreData = serializers.toFirestore(
     VariableStatesRecord.serializer,
     VariableStatesRecord(
       (v) => v
-        ..state1 = VariableStateStructBuilder()
-        ..state2 = VariableStateStructBuilder()
-        ..state3 = VariableStateStructBuilder()
-        ..state4 = VariableStateStructBuilder(),
+        ..doButton1 = doButton1
+        ..doButton2 = doButton2
+        ..doButton3 = doButton3
+        ..doButton4 = doButton4
+        ..stateName = stateName,
     ),
   );
-
-  // Handle nested data for "state1" field.
-  addVariableStateStructData(firestoreData, state1, 'state1');
-
-  // Handle nested data for "state2" field.
-  addVariableStateStructData(firestoreData, state2, 'state2');
-
-  // Handle nested data for "state3" field.
-  addVariableStateStructData(firestoreData, state3, 'state3');
-
-  // Handle nested data for "state4" field.
-  addVariableStateStructData(firestoreData, state4, 'state4');
 
   return firestoreData;
 }

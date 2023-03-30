@@ -19,6 +19,8 @@ class TypeChoiceCopyModel extends FlutterFlowModel {
   // State field(s) for TextField widget.
   TextEditingController? textController;
   String? Function(BuildContext, String?)? textControllerValidator;
+  // Stores action output result for [Backend Call - Create Document] action in Button widget.
+  ThingsRecord? newThing;
 
   /// Initialization and disposal methods.
 

@@ -41,6 +41,13 @@ class _$ThingsRecordSerializer implements StructuredSerializer<ThingsRecord> {
         ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
+    value = object.codeID;
+    if (value != null) {
+      result
+        ..add('codeID')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
+    }
     value = object.ffRef;
     if (value != null) {
       result
@@ -76,6 +83,10 @@ class _$ThingsRecordSerializer implements StructuredSerializer<ThingsRecord> {
           result.thingName = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String?;
           break;
+        case 'codeID':
+          result.codeID = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String?;
+          break;
         case 'Document__Reference__Field':
           result.ffRef = serializers.deserialize(value,
               specifiedType: const FullType(DocumentReference, const [
@@ -97,12 +108,15 @@ class _$ThingsRecord extends ThingsRecord {
   @override
   final String? thingName;
   @override
+  final String? codeID;
+  @override
   final DocumentReference<Object?>? ffRef;
 
   factory _$ThingsRecord([void Function(ThingsRecordBuilder)? updates]) =>
       (new ThingsRecordBuilder()..update(updates))._build();
 
-  _$ThingsRecord._({this.state, this.typeId, this.thingName, this.ffRef})
+  _$ThingsRecord._(
+      {this.state, this.typeId, this.thingName, this.codeID, this.ffRef})
       : super._();
 
   @override
@@ -119,6 +133,7 @@ class _$ThingsRecord extends ThingsRecord {
         state == other.state &&
         typeId == other.typeId &&
         thingName == other.thingName &&
+        codeID == other.codeID &&
         ffRef == other.ffRef;
   }
 
@@ -128,6 +143,7 @@ class _$ThingsRecord extends ThingsRecord {
     _$hash = $jc(_$hash, state.hashCode);
     _$hash = $jc(_$hash, typeId.hashCode);
     _$hash = $jc(_$hash, thingName.hashCode);
+    _$hash = $jc(_$hash, codeID.hashCode);
     _$hash = $jc(_$hash, ffRef.hashCode);
     _$hash = $jf(_$hash);
     return _$hash;
@@ -139,6 +155,7 @@ class _$ThingsRecord extends ThingsRecord {
           ..add('state', state)
           ..add('typeId', typeId)
           ..add('thingName', thingName)
+          ..add('codeID', codeID)
           ..add('ffRef', ffRef))
         .toString();
   }
@@ -160,6 +177,10 @@ class ThingsRecordBuilder
   String? get thingName => _$this._thingName;
   set thingName(String? thingName) => _$this._thingName = thingName;
 
+  String? _codeID;
+  String? get codeID => _$this._codeID;
+  set codeID(String? codeID) => _$this._codeID = codeID;
+
   DocumentReference<Object?>? _ffRef;
   DocumentReference<Object?>? get ffRef => _$this._ffRef;
   set ffRef(DocumentReference<Object?>? ffRef) => _$this._ffRef = ffRef;
@@ -174,6 +195,7 @@ class ThingsRecordBuilder
       _state = $v.state;
       _typeId = $v.typeId;
       _thingName = $v.thingName;
+      _codeID = $v.codeID;
       _ffRef = $v.ffRef;
       _$v = null;
     }
@@ -197,7 +219,11 @@ class ThingsRecordBuilder
   _$ThingsRecord _build() {
     final _$result = _$v ??
         new _$ThingsRecord._(
-            state: state, typeId: typeId, thingName: thingName, ffRef: ffRef);
+            state: state,
+            typeId: typeId,
+            thingName: thingName,
+            codeID: codeID,
+            ffRef: ffRef);
     replace(_$result);
     return _$result;
   }

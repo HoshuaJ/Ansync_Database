@@ -57,7 +57,7 @@ class _TypeCreatorCopyCopyWidgetState extends State<TypeCreatorCopyCopyWidget> {
         final typeCreatorCopyCopyUsersRecord = snapshot.data!;
         return Scaffold(
           key: scaffoldKey,
-          backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
+          backgroundColor: Colors.white,
           appBar: PreferredSize(
             preferredSize: Size.fromHeight(100.0),
             child: AppBar(
@@ -237,14 +237,19 @@ class _TypeCreatorCopyCopyWidgetState extends State<TypeCreatorCopyCopyWidget> {
                             child: ListTile(
                               title: Text(
                                 listViewTypesRecord.typeName!,
-                                style: FlutterFlowTheme.of(context).title3,
+                                style: FlutterFlowTheme.of(context)
+                                    .title3
+                                    .override(
+                                      fontFamily: 'Poppins',
+                                      color: Colors.black,
+                                    ),
                               ),
                               trailing: Icon(
                                 Icons.arrow_forward_ios,
                                 color: Color(0xFF303030),
                                 size: 20.0,
                               ),
-                              tileColor: Color(0xFFF5F5F5),
+                              tileColor: Color(0xFF96F683),
                               dense: false,
                             ),
                           );

@@ -1,7 +1,10 @@
+import '/auth/auth_util.dart';
+import '/backend/backend.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -9,7 +12,16 @@ import 'admin_model.dart';
 export 'admin_model.dart';
 
 class AdminWidget extends StatefulWidget {
-  const AdminWidget({Key? key}) : super(key: key);
+  const AdminWidget({
+    Key? key,
+    this.currentState,
+    this.enteredName,
+    this.currentType,
+  }) : super(key: key);
+
+  final VariableStatesRecord? currentState;
+  final String? enteredName;
+  final TypesRecord? currentType;
 
   @override
   _AdminWidgetState createState() => _AdminWidgetState();
@@ -25,6 +37,8 @@ class _AdminWidgetState extends State<AdminWidget> {
   void initState() {
     super.initState();
     _model = createModel(context, () => AdminModel());
+
+    _model.textController ??= TextEditingController();
   }
 
   @override
@@ -73,7 +87,18 @@ class _AdminWidgetState extends State<AdminWidget> {
                               size: 30.0,
                             ),
                             onPressed: () async {
-                              context.pushNamed('TypeCreator');
+                              context.pushNamed(
+                                'TypeCreatorCopyCopyCopyCopy',
+                                queryParams: {
+                                  'currentType': serializeParam(
+                                    widget.currentType,
+                                    ParamType.Document,
+                                  ),
+                                }.withoutNulls,
+                                extra: <String, dynamic>{
+                                  'currentType': widget.currentType,
+                                },
+                              );
                             },
                           ),
                         ),
@@ -149,13 +174,74 @@ class _AdminWidgetState extends State<AdminWidget> {
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
+              Text(
+                'Change State Name',
+                style: FlutterFlowTheme.of(context).bodyText1,
+              ),
+              TextFormField(
+                controller: _model.textController,
+                onFieldSubmitted: (_) async {
+                  setState(() {
+                    _model.textController?.text = widget.enteredName!;
+                  });
+                },
+                autofocus: true,
+                obscureText: false,
+                decoration: InputDecoration(
+                  hintText: '[State Name]',
+                  hintStyle: FlutterFlowTheme.of(context).bodyText2,
+                  enabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Color(0x00000000),
+                      width: 1.0,
+                    ),
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(4.0),
+                      topRight: Radius.circular(4.0),
+                    ),
+                  ),
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Color(0x00000000),
+                      width: 1.0,
+                    ),
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(4.0),
+                      topRight: Radius.circular(4.0),
+                    ),
+                  ),
+                  errorBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Color(0x00000000),
+                      width: 1.0,
+                    ),
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(4.0),
+                      topRight: Radius.circular(4.0),
+                    ),
+                  ),
+                  focusedErrorBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Color(0x00000000),
+                      width: 1.0,
+                    ),
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(4.0),
+                      topRight: Radius.circular(4.0),
+                    ),
+                  ),
+                ),
+                style: FlutterFlowTheme.of(context).bodyText1,
+                textAlign: TextAlign.center,
+                validator: _model.textControllerValidator.asValidator(context),
+              ),
               Padding(
                 padding: EdgeInsetsDirectional.fromSTEB(30.0, 0.0, 30.0, 0.0),
                 child: FFButtonWidget(
                   onPressed: () {
                     print('Button pressed ...');
                   },
-                  text: 'Add Log Messages',
+                  text: widget.currentState!.doButton1!,
                   options: FFButtonOptions(
                     width: 450.0,
                     height: 80.0,
@@ -182,7 +268,7 @@ class _AdminWidgetState extends State<AdminWidget> {
                   onPressed: () {
                     print('Button pressed ...');
                   },
-                  text: 'Open Text Dialog ',
+                  text: widget.currentState!.doButton2!,
                   options: FFButtonOptions(
                     width: 450.0,
                     height: 80.0,
@@ -209,7 +295,7 @@ class _AdminWidgetState extends State<AdminWidget> {
                   onPressed: () {
                     print('Button pressed ...');
                   },
-                  text: 'Set State Variable',
+                  text: widget.currentState!.doButton3!,
                   options: FFButtonOptions(
                     width: 450.0,
                     height: 80.0,
@@ -236,7 +322,7 @@ class _AdminWidgetState extends State<AdminWidget> {
                   onPressed: () {
                     print('Button pressed ...');
                   },
-                  text: 'Send Email',
+                  text: widget.currentState!.doButton4!,
                   options: FFButtonOptions(
                     width: 480.0,
                     height: 80.0,
@@ -255,6 +341,47 @@ class _AdminWidgetState extends State<AdminWidget> {
                     ),
                     borderRadius: BorderRadius.circular(20.0),
                   ),
+                ),
+              ),
+              FFButtonWidget(
+                onPressed: () async {
+                  final variableStatesUpdateData =
+                      createVariableStatesRecordData(
+                    stateName: _model.textController.text,
+                  );
+                  await widget.currentState!.reference
+                      .update(variableStatesUpdateData);
+
+                  context.pushNamed(
+                    'TypeCreatorCopyCopyCopyCopy',
+                    queryParams: {
+                      'currentType': serializeParam(
+                        widget.currentType,
+                        ParamType.Document,
+                      ),
+                    }.withoutNulls,
+                    extra: <String, dynamic>{
+                      'currentType': widget.currentType,
+                    },
+                  );
+                },
+                text: 'Submit Changes',
+                options: FFButtonOptions(
+                  width: 130.0,
+                  height: 40.0,
+                  padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
+                  iconPadding:
+                      EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
+                  color: FlutterFlowTheme.of(context).primaryColor,
+                  textStyle: FlutterFlowTheme.of(context).subtitle2.override(
+                        fontFamily: 'Poppins',
+                        color: Colors.white,
+                      ),
+                  borderSide: BorderSide(
+                    color: Colors.transparent,
+                    width: 1.0,
+                  ),
+                  borderRadius: BorderRadius.circular(8.0),
                 ),
               ),
             ],

@@ -17,12 +17,12 @@ class TypeChoiceCopyWidget extends StatefulWidget {
     Key? key,
     this.enteredName,
     this.typeChosen,
-    this.thingId,
+    this.scannedID,
   }) : super(key: key);
 
   final String? enteredName;
   final String? typeChosen;
-  final String? thingId;
+  final String? scannedID;
 
   @override
   _TypeChoiceCopyWidgetState createState() => _TypeChoiceCopyWidgetState();
@@ -64,40 +64,10 @@ class _TypeChoiceCopyWidgetState extends State<TypeChoiceCopyWidget> {
               width: double.infinity,
               height: double.infinity,
               decoration: BoxDecoration(
-                color: FlutterFlowTheme.of(context).secondaryBackground,
+                color: Colors.white,
               ),
               child: Stack(
                 children: [
-                  Align(
-                    alignment: AlignmentDirectional(0.0, 1.0),
-                    child: Container(
-                      width: double.infinity,
-                      height: 250.0,
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [Color(0xFFFCFCFC), Color(0xC345D239)],
-                          stops: [0.0, 1.0],
-                          begin: AlignmentDirectional(0.0, -1.0),
-                          end: AlignmentDirectional(0, 1.0),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Align(
-                    alignment: AlignmentDirectional(0.0, -1.0),
-                    child: Container(
-                      width: double.infinity,
-                      height: 250.0,
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [Color(0xC345D239), Color(0xFFF9F9F9)],
-                          stops: [0.0, 1.0],
-                          begin: AlignmentDirectional(0.0, -1.0),
-                          end: AlignmentDirectional(0, 1.0),
-                        ),
-                      ),
-                    ),
-                  ),
                   Align(
                     alignment: AlignmentDirectional(0.0, -0.92),
                     child: Row(
@@ -135,10 +105,7 @@ class _TypeChoiceCopyWidgetState extends State<TypeChoiceCopyWidget> {
                   Align(
                     alignment: AlignmentDirectional(0.02, -0.19),
                     child: StreamBuilder<List<TypesRecord>>(
-                      stream: queryTypesRecord(
-                        queryBuilder: (typesRecord) =>
-                            typesRecord.orderBy('typeName'),
-                      ),
+                      stream: queryTypesRecord(),
                       builder: (context, snapshot) {
                         // Customize what your widget looks like when it's loading.
                         if (!snapshot.hasData) {
@@ -158,7 +125,11 @@ class _TypeChoiceCopyWidgetState extends State<TypeChoiceCopyWidget> {
                         return FlutterFlowDropDown<String>(
                           controller: _model.dropDownController ??=
                               FormFieldController<String>(null),
-                          options: ['Car', 'Live Stock', ''],
+                          options: dropDownTypesRecordList
+                              .map((e) => e.typeName)
+                              .withoutNulls
+                              .toList()
+                              .toList(),
                           onChanged: (val) async {
                             setState(() => _model.dropDownValue = val);
                             setState(() {
@@ -203,11 +174,6 @@ class _TypeChoiceCopyWidgetState extends State<TypeChoiceCopyWidget> {
                     alignment: AlignmentDirectional(0.0, 0.21),
                     child: TextFormField(
                       controller: _model.textController,
-                      onFieldSubmitted: (_) async {
-                        setState(() {
-                          _model.textController?.text = widget.enteredName!;
-                        });
-                      },
                       autofocus: true,
                       obscureText: false,
                       decoration: InputDecoration(
@@ -283,14 +249,30 @@ class _TypeChoiceCopyWidgetState extends State<TypeChoiceCopyWidget> {
                     child: FFButtonWidget(
                       onPressed: () async {
                         final thingsCreateData = createThingsRecordData(
-                          typeId: widget.typeChosen,
-                          thingName: widget.enteredName,
+                          typeId: _model.dropDownValue,
+                          thingName: _model.textController.text,
+                          codeID: widget.scannedID,
                         );
-                        await ThingsRecord.collection
-                            .doc()
-                            .set(thingsCreateData);
+                        var thingsRecordReference =
+                            ThingsRecord.collection.doc();
+                        await thingsRecordReference.set(thingsCreateData);
+                        _model.newThing = ThingsRecord.getDocumentFromData(
+                            thingsCreateData, thingsRecordReference);
 
-                        context.pushNamed('ThingPage');
+                        context.pushNamed(
+                          'ThingPage',
+                          queryParams: {
+                            'thing': serializeParam(
+                              _model.newThing,
+                              ParamType.Document,
+                            ),
+                          }.withoutNulls,
+                          extra: <String, dynamic>{
+                            'thing': _model.newThing,
+                          },
+                        );
+
+                        setState(() {});
                       },
                       text: 'Enter',
                       options: FFButtonOptions(

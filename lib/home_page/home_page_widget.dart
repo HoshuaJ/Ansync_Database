@@ -51,39 +51,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                   width: double.infinity,
                   height: double.infinity,
                   decoration: BoxDecoration(
-                    color: FlutterFlowTheme.of(context).secondaryBackground,
-                  ),
-                ),
-              ),
-              Align(
-                alignment: AlignmentDirectional(0.15, -1.0),
-                child: Container(
-                  width: double.infinity,
-                  height: double.infinity,
-                  constraints: BoxConstraints(
-                    maxHeight: 250.0,
-                  ),
-                  decoration: BoxDecoration(
                     gradient: LinearGradient(
-                      colors: [Color(0xC345D239), Colors.white],
-                      stops: [0.0, 1.0],
-                      begin: AlignmentDirectional(0.0, -1.0),
-                      end: AlignmentDirectional(0, 1.0),
-                    ),
-                  ),
-                ),
-              ),
-              Align(
-                alignment: AlignmentDirectional(0.0, 1.0),
-                child: Container(
-                  width: double.infinity,
-                  height: double.infinity,
-                  constraints: BoxConstraints(
-                    maxHeight: 250.0,
-                  ),
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [Colors.white, Color(0xC345D239)],
+                      colors: [Color(0xC3FFFFFF), Colors.white],
                       stops: [0.0, 1.0],
                       begin: AlignmentDirectional(0.0, -1.0),
                       end: AlignmentDirectional(0, 1.0),

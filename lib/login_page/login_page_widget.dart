@@ -53,7 +53,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
               width: double.infinity,
               height: double.infinity,
               decoration: BoxDecoration(
-                color: FlutterFlowTheme.of(context).secondaryBackground,
+                color: Colors.white,
               ),
             ),
             Align(
@@ -63,18 +63,6 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                 height: 250.0,
                 decoration: BoxDecoration(
                   color: Color(0x00FFFFFF),
-                ),
-                child: Container(
-                  width: double.infinity,
-                  height: 250.0,
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [Color(0xC345D239), Colors.white],
-                      stops: [0.0, 1.0],
-                      begin: AlignmentDirectional(0.0, -1.0),
-                      end: AlignmentDirectional(0, 1.0),
-                    ),
-                  ),
                 ),
               ),
             ),
@@ -481,25 +469,6 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                                             ),
                                           ),
                                         ],
-                                      ),
-                                    ),
-                                    Align(
-                                      alignment: AlignmentDirectional(0.0, 1.0),
-                                      child: Container(
-                                        width: double.infinity,
-                                        height: 250.0,
-                                        decoration: BoxDecoration(
-                                          gradient: LinearGradient(
-                                            colors: [
-                                              Colors.white,
-                                              Color(0xC345D239)
-                                            ],
-                                            stops: [0.0, 1.0],
-                                            begin:
-                                                AlignmentDirectional(0.0, -1.0),
-                                            end: AlignmentDirectional(0, 1.0),
-                                          ),
-                                        ),
                                       ),
                                     ),
                                   ],

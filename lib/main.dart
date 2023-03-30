@@ -122,7 +122,6 @@ class _NavBarPageState extends State<NavBarPage> {
       'HomePage': HomePageWidget(),
       'QR_Scanner': QRScannerWidget(),
       'TypeCreatorCopy': TypeCreatorCopyWidget(),
-      'User': UserWidget(),
       'TypeCreatorCopyCopy': TypeCreatorCopyCopyWidget(),
       'TypeCreatorCopyCopyCopy': TypeCreatorCopyCopyCopyWidget(),
       'TypeCreatorCopyCopyCopyCopy': TypeCreatorCopyCopyCopyCopyWidget(),
@@ -165,14 +164,6 @@ class _NavBarPageState extends State<NavBarPage> {
               size: 24.0,
             ),
             label: 'Type Creator',
-            tooltip: '',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.person,
-              size: 24.0,
-            ),
-            label: 'User',
             tooltip: '',
           ),
           BottomNavigationBarItem(

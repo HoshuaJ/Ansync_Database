@@ -16,6 +16,8 @@ abstract class ThingsRecord
 
   String? get thingName;
 
+  String? get codeID;
+
   @BuiltValueField(wireName: kDocumentReferenceField)
   DocumentReference? get ffRef;
   DocumentReference get reference => ffRef!;
@@ -23,7 +25,8 @@ abstract class ThingsRecord
   static void _initializeBuilder(ThingsRecordBuilder builder) => builder
     ..state = ''
     ..typeId = ''
-    ..thingName = '';
+    ..thingName = ''
+    ..codeID = '';
 
   static CollectionReference get collection =>
       FirebaseFirestore.instance.collection('things');
@@ -50,6 +53,7 @@ Map<String, dynamic> createThingsRecordData({
   String? state,
   String? typeId,
   String? thingName,
+  String? codeID,
 }) {
   final firestoreData = serializers.toFirestore(
     ThingsRecord.serializer,
@@ -57,7 +61,8 @@ Map<String, dynamic> createThingsRecordData({
       (t) => t
         ..state = state
         ..typeId = typeId
-        ..thingName = thingName,
+        ..thingName = thingName
+        ..codeID = codeID,
     ),
   );
 

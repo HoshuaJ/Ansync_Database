@@ -12,7 +12,12 @@ import 'type_creator_copy_model.dart';
 export 'type_creator_copy_model.dart';
 
 class TypeCreatorCopyWidget extends StatefulWidget {
-  const TypeCreatorCopyWidget({Key? key}) : super(key: key);
+  const TypeCreatorCopyWidget({
+    Key? key,
+    this.newType,
+  }) : super(key: key);
+
+  final DocumentReference? newType;
 
   @override
   _TypeCreatorCopyWidgetState createState() => _TypeCreatorCopyWidgetState();
@@ -42,7 +47,7 @@ class _TypeCreatorCopyWidgetState extends State<TypeCreatorCopyWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: scaffoldKey,
-      backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
+      backgroundColor: Colors.white,
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(100.0),
         child: AppBar(
@@ -248,10 +253,13 @@ class _TypeCreatorCopyWidgetState extends State<TypeCreatorCopyWidget> {
                         'AdminCopy',
                         queryParams: {
                           'newType': serializeParam(
-                            _model.newType!.reference,
-                            ParamType.DocumentReference,
+                            _model.newType,
+                            ParamType.Document,
                           ),
                         }.withoutNulls,
+                        extra: <String, dynamic>{
+                          'newType': _model.newType,
+                        },
                       );
 
                       setState(() {});

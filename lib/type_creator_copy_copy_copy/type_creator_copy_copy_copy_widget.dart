@@ -224,150 +224,38 @@ class _TypeCreatorCopyCopyCopyWidgetState
                         itemBuilder: (context, listViewIndex) {
                           final listViewVariableStatesRecord =
                               listViewVariableStatesRecordList[listViewIndex];
-                          return ListTile(
-                            title: Text(
-                              listViewVariableStatesRecord.state1.stateName!,
-                              style: FlutterFlowTheme.of(context).title3,
+                          return InkWell(
+                            onTap: () async {
+                              context.pushNamed(
+                                'AdminCopy2',
+                                queryParams: {
+                                  'currentState': serializeParam(
+                                    listViewVariableStatesRecord,
+                                    ParamType.Document,
+                                  ),
+                                  'currentType': serializeParam(
+                                    widget.currentType,
+                                    ParamType.Document,
+                                  ),
+                                }.withoutNulls,
+                                extra: <String, dynamic>{
+                                  'currentState': listViewVariableStatesRecord,
+                                  'currentType': widget.currentType,
+                                },
+                              );
+                            },
+                            child: ListTile(
+                              title: Text(
+                                listViewVariableStatesRecord.stateName!,
+                                style: FlutterFlowTheme.of(context).title3,
+                              ),
+                              trailing: Icon(
+                                Icons.arrow_forward_ios,
+                                color: Color(0xFF303030),
+                                size: 20.0,
+                              ),
+                              dense: false,
                             ),
-                            trailing: Icon(
-                              Icons.arrow_forward_ios,
-                              color: Color(0xFF303030),
-                              size: 20.0,
-                            ),
-                            tileColor: Color(0xFFF5F5F5),
-                            dense: false,
-                          );
-                        },
-                      );
-                    },
-                  ),
-                  StreamBuilder<List<VariableStatesRecord>>(
-                    stream: queryVariableStatesRecord(
-                      parent: widget.currentType!.reference,
-                    ),
-                    builder: (context, snapshot) {
-                      // Customize what your widget looks like when it's loading.
-                      if (!snapshot.hasData) {
-                        return Center(
-                          child: SizedBox(
-                            width: 50.0,
-                            height: 50.0,
-                            child: CircularProgressIndicator(
-                              color: FlutterFlowTheme.of(context).primaryColor,
-                            ),
-                          ),
-                        );
-                      }
-                      List<VariableStatesRecord>
-                          listViewVariableStatesRecordList = snapshot.data!;
-                      return ListView.builder(
-                        padding: EdgeInsets.zero,
-                        shrinkWrap: true,
-                        scrollDirection: Axis.vertical,
-                        itemCount: listViewVariableStatesRecordList.length,
-                        itemBuilder: (context, listViewIndex) {
-                          final listViewVariableStatesRecord =
-                              listViewVariableStatesRecordList[listViewIndex];
-                          return ListTile(
-                            title: Text(
-                              listViewVariableStatesRecord.state2.stateName!,
-                              style: FlutterFlowTheme.of(context).title3,
-                            ),
-                            trailing: Icon(
-                              Icons.arrow_forward_ios,
-                              color: Color(0xFF303030),
-                              size: 20.0,
-                            ),
-                            tileColor: Color(0xFFF5F5F5),
-                            dense: false,
-                          );
-                        },
-                      );
-                    },
-                  ),
-                  StreamBuilder<List<VariableStatesRecord>>(
-                    stream: queryVariableStatesRecord(
-                      parent: widget.currentType!.reference,
-                    ),
-                    builder: (context, snapshot) {
-                      // Customize what your widget looks like when it's loading.
-                      if (!snapshot.hasData) {
-                        return Center(
-                          child: SizedBox(
-                            width: 50.0,
-                            height: 50.0,
-                            child: CircularProgressIndicator(
-                              color: FlutterFlowTheme.of(context).primaryColor,
-                            ),
-                          ),
-                        );
-                      }
-                      List<VariableStatesRecord>
-                          listViewVariableStatesRecordList = snapshot.data!;
-                      return ListView.builder(
-                        padding: EdgeInsets.zero,
-                        shrinkWrap: true,
-                        scrollDirection: Axis.vertical,
-                        itemCount: listViewVariableStatesRecordList.length,
-                        itemBuilder: (context, listViewIndex) {
-                          final listViewVariableStatesRecord =
-                              listViewVariableStatesRecordList[listViewIndex];
-                          return ListTile(
-                            title: Text(
-                              listViewVariableStatesRecord.state3.stateName!,
-                              style: FlutterFlowTheme.of(context).title3,
-                            ),
-                            trailing: Icon(
-                              Icons.arrow_forward_ios,
-                              color: Color(0xFF303030),
-                              size: 20.0,
-                            ),
-                            tileColor: Color(0xFFF5F5F5),
-                            dense: false,
-                          );
-                        },
-                      );
-                    },
-                  ),
-                  StreamBuilder<List<VariableStatesRecord>>(
-                    stream: queryVariableStatesRecord(
-                      parent: widget.currentType!.reference,
-                    ),
-                    builder: (context, snapshot) {
-                      // Customize what your widget looks like when it's loading.
-                      if (!snapshot.hasData) {
-                        return Center(
-                          child: SizedBox(
-                            width: 50.0,
-                            height: 50.0,
-                            child: CircularProgressIndicator(
-                              color: FlutterFlowTheme.of(context).primaryColor,
-                            ),
-                          ),
-                        );
-                      }
-                      List<VariableStatesRecord>
-                          listViewVariableStatesRecordList = snapshot.data!;
-                      return ListView.builder(
-                        padding: EdgeInsets.zero,
-                        shrinkWrap: true,
-                        scrollDirection: Axis.vertical,
-                        itemCount: listViewVariableStatesRecordList.length,
-                        itemBuilder: (context, listViewIndex) {
-                          final listViewVariableStatesRecord =
-                              listViewVariableStatesRecordList[listViewIndex];
-                          return ListTile(
-                            title: Text(
-                              listViewVariableStatesRecord.state4.stateName!,
-                              style: FlutterFlowTheme.of(context).title3,
-                            ),
-                            trailing: Icon(
-                              Icons.arrow_forward_ios,
-                              color: Color(0xFF303030),
-                              size: 20.0,
-                            ),
-                            tileColor: Color(0xFFF5F5F5),
-                            dense: false,
                           );
                         },
                       );
