@@ -1,4 +1,4 @@
-import '/auth/auth_util.dart';
+import '/auth/firebase_auth/auth_util.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
@@ -42,12 +42,12 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      key: scaffoldKey,
-      backgroundColor: Color(0xFF4B39EF),
-      body: GestureDetector(
-        onTap: () => FocusScope.of(context).requestFocus(_unfocusNode),
-        child: Stack(
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).requestFocus(_unfocusNode),
+      child: Scaffold(
+        key: scaffoldKey,
+        backgroundColor: Color(0xFF4B39EF),
+        body: Stack(
           children: [
             Container(
               width: double.infinity,
@@ -92,7 +92,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                               Text(
                                 'Ansync Labs',
                                 style: FlutterFlowTheme.of(context)
-                                    .bodyText1
+                                    .bodyMedium
                                     .override(
                                       fontFamily: 'Poppins',
                                       color: Colors.black,
@@ -111,27 +111,31 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                       initialIndex: 0,
                       child: Column(
                         children: [
-                          TabBar(
-                            isScrollable: true,
-                            labelColor: Colors.black,
-                            labelPadding: EdgeInsetsDirectional.fromSTEB(
-                                24.0, 0.0, 24.0, 0.0),
-                            labelStyle:
-                                FlutterFlowTheme.of(context).subtitle1.override(
-                                      fontFamily: 'Outfit',
-                                      color: Color(0xFF0F1113),
-                                      fontSize: 18.0,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                            indicatorColor: Colors.black,
-                            tabs: [
-                              Tab(
-                                text: 'Sign In',
-                              ),
-                              Tab(
-                                text: 'Sign Up',
-                              ),
-                            ],
+                          Align(
+                            alignment: Alignment(0.0, 0),
+                            child: TabBar(
+                              isScrollable: true,
+                              labelColor: Colors.black,
+                              labelPadding: EdgeInsetsDirectional.fromSTEB(
+                                  24.0, 0.0, 24.0, 0.0),
+                              labelStyle: FlutterFlowTheme.of(context)
+                                  .titleMedium
+                                  .override(
+                                    fontFamily: 'Outfit',
+                                    color: Color(0xFF0F1113),
+                                    fontSize: 18.0,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                              indicatorColor: Colors.black,
+                              tabs: [
+                                Tab(
+                                  text: 'Sign In',
+                                ),
+                                Tab(
+                                  text: 'Sign Up',
+                                ),
+                              ],
+                            ),
                           ),
                           Expanded(
                             child: TabBarView(
@@ -156,7 +160,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                                                 labelText: 'Email Address',
                                                 labelStyle:
                                                     FlutterFlowTheme.of(context)
-                                                        .bodyText2
+                                                        .bodySmall
                                                         .override(
                                                           fontFamily: 'Outfit',
                                                           color:
@@ -168,7 +172,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                                                 hintText: 'Enter your email...',
                                                 hintStyle:
                                                     FlutterFlowTheme.of(context)
-                                                        .bodyText2
+                                                        .bodySmall
                                                         .override(
                                                           fontFamily: 'Outfit',
                                                           color:
@@ -225,7 +229,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                                               ),
                                               style:
                                                   FlutterFlowTheme.of(context)
-                                                      .bodyText1
+                                                      .bodyMedium
                                                       .override(
                                                         fontFamily: 'Outfit',
                                                         color:
@@ -253,7 +257,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                                                 labelText: 'Password',
                                                 labelStyle:
                                                     FlutterFlowTheme.of(context)
-                                                        .bodyText2
+                                                        .bodySmall
                                                         .override(
                                                           fontFamily: 'Outfit',
                                                           color:
@@ -266,7 +270,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                                                     'Enter your password...',
                                                 hintStyle:
                                                     FlutterFlowTheme.of(context)
-                                                        .bodyText2
+                                                        .bodySmall
                                                         .override(
                                                           fontFamily: 'Outfit',
                                                           color:
@@ -342,7 +346,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                                               ),
                                               style:
                                                   FlutterFlowTheme.of(context)
-                                                      .bodyText1
+                                                      .bodyMedium
                                                       .override(
                                                         fontFamily: 'Outfit',
                                                         color:
@@ -365,8 +369,8 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                                                 GoRouter.of(context)
                                                     .prepareAuthEvent();
 
-                                                final user =
-                                                    await signInWithEmail(
+                                                final user = await authManager
+                                                    .signInWithEmail(
                                                   context,
                                                   _model.emailAddressController
                                                       .text,
@@ -394,7 +398,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                                                 color: Colors.white,
                                                 textStyle:
                                                     FlutterFlowTheme.of(context)
-                                                        .subtitle2
+                                                        .titleSmall
                                                         .override(
                                                           fontFamily: 'Outfit',
                                                           color:
@@ -431,7 +435,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                                                   );
                                                   return;
                                                 }
-                                                await resetPassword(
+                                                await authManager.resetPassword(
                                                   email: _model
                                                       .emailAddressController
                                                       .text,
@@ -449,21 +453,21 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                                                     EdgeInsetsDirectional
                                                         .fromSTEB(
                                                             0.0, 0.0, 0.0, 0.0),
-                                                color: Color(0xC345D239),
+                                                color: Color(0xFF4B39EF),
                                                 textStyle:
                                                     FlutterFlowTheme.of(context)
-                                                        .subtitle2
+                                                        .titleSmall
                                                         .override(
                                                           fontFamily: 'Outfit',
-                                                          color: Colors.black,
-                                                          fontSize: 20.0,
+                                                          color: Colors.white,
+                                                          fontSize: 17.0,
                                                           fontWeight:
                                                               FontWeight.normal,
                                                         ),
                                                 elevation: 0.0,
                                                 borderSide: BorderSide(
-                                                  color: Colors.transparent,
-                                                  width: 1.0,
+                                                  color: Colors.black,
+                                                  width: 3.0,
                                                 ),
                                               ),
                                             ),
@@ -490,7 +494,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                                             labelText: 'Email Address',
                                             labelStyle:
                                                 FlutterFlowTheme.of(context)
-                                                    .bodyText2
+                                                    .bodySmall
                                                     .override(
                                                       fontFamily: 'Outfit',
                                                       color: Color(0xFF57636C),
@@ -501,7 +505,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                                             hintText: 'Enter your email...',
                                             hintStyle:
                                                 FlutterFlowTheme.of(context)
-                                                    .bodyText2
+                                                    .bodySmall
                                                     .override(
                                                       fontFamily: 'Outfit',
                                                       color: Color(0xFF57636C),
@@ -549,7 +553,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                                                     20.0, 24.0, 20.0, 24.0),
                                           ),
                                           style: FlutterFlowTheme.of(context)
-                                              .bodyText1
+                                              .bodyMedium
                                               .override(
                                                 fontFamily: 'Outfit',
                                                 color: Color(0xFF0F1113),
@@ -574,7 +578,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                                             labelText: 'Password',
                                             labelStyle:
                                                 FlutterFlowTheme.of(context)
-                                                    .bodyText2
+                                                    .bodySmall
                                                     .override(
                                                       fontFamily: 'Outfit',
                                                       color: Color(0xFF57636C),
@@ -585,7 +589,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                                             hintText: 'Enter your password...',
                                             hintStyle:
                                                 FlutterFlowTheme.of(context)
-                                                    .bodyText2
+                                                    .bodySmall
                                                     .override(
                                                       fontFamily: 'Outfit',
                                                       color: Color(0xFF57636C),
@@ -651,7 +655,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                                             ),
                                           ),
                                           style: FlutterFlowTheme.of(context)
-                                              .bodyText1
+                                              .bodyMedium
                                               .override(
                                                 fontFamily: 'Outfit',
                                                 color: Color(0xFF0F1113),
@@ -671,8 +675,8 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                                             GoRouter.of(context)
                                                 .prepareAuthEvent();
 
-                                            final user =
-                                                await createAccountWithEmail(
+                                            final user = await authManager
+                                                .createAccountWithEmail(
                                               context,
                                               _model
                                                   .emailAddressCreateController
@@ -700,7 +704,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                                             color: Colors.white,
                                             textStyle:
                                                 FlutterFlowTheme.of(context)
-                                                    .subtitle2
+                                                    .titleSmall
                                                     .override(
                                                       fontFamily: 'Outfit',
                                                       color: Color(0xFF4B39EF),

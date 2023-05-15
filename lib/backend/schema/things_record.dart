@@ -10,23 +10,25 @@ abstract class ThingsRecord
     implements Built<ThingsRecord, ThingsRecordBuilder> {
   static Serializer<ThingsRecord> get serializer => _$thingsRecordSerializer;
 
-  String? get state;
-
   String? get typeId;
 
   String? get thingName;
 
   String? get codeID;
 
+  DateTime? get initDate;
+
+  BuiltList<String>? get states;
+
   @BuiltValueField(wireName: kDocumentReferenceField)
   DocumentReference? get ffRef;
   DocumentReference get reference => ffRef!;
 
   static void _initializeBuilder(ThingsRecordBuilder builder) => builder
-    ..state = ''
     ..typeId = ''
     ..thingName = ''
-    ..codeID = '';
+    ..codeID = ''
+    ..states = ListBuilder();
 
   static CollectionReference get collection =>
       FirebaseFirestore.instance.collection('things');
@@ -50,19 +52,20 @@ abstract class ThingsRecord
 }
 
 Map<String, dynamic> createThingsRecordData({
-  String? state,
   String? typeId,
   String? thingName,
   String? codeID,
+  DateTime? initDate,
 }) {
   final firestoreData = serializers.toFirestore(
     ThingsRecord.serializer,
     ThingsRecord(
       (t) => t
-        ..state = state
         ..typeId = typeId
         ..thingName = thingName
-        ..codeID = codeID,
+        ..codeID = codeID
+        ..initDate = initDate
+        ..states = null,
     ),
   );
 

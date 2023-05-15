@@ -9,25 +9,29 @@ part 'logs_record.g.dart';
 abstract class LogsRecord implements Built<LogsRecord, LogsRecordBuilder> {
   static Serializer<LogsRecord> get serializer => _$logsRecordSerializer;
 
-  String? get action;
+  String? get message;
 
-  String? get thingId;
+  DateTime? get timeOfChange;
 
-  DateTime? get timestamp;
-
-  String? get userId;
+  String? get user;
 
   @BuiltValueField(wireName: kDocumentReferenceField)
   DocumentReference? get ffRef;
   DocumentReference get reference => ffRef!;
 
-  static void _initializeBuilder(LogsRecordBuilder builder) => builder
-    ..action = ''
-    ..thingId = ''
-    ..userId = '';
+  DocumentReference get parentReference => reference.parent.parent!;
 
-  static CollectionReference get collection =>
-      FirebaseFirestore.instance.collection('Logs');
+  static void _initializeBuilder(LogsRecordBuilder builder) => builder
+    ..message = ''
+    ..user = '';
+
+  static Query<Map<String, dynamic>> collection([DocumentReference? parent]) =>
+      parent != null
+          ? parent.collection('logs')
+          : FirebaseFirestore.instance.collectionGroup('logs');
+
+  static DocumentReference createDoc(DocumentReference parent) =>
+      parent.collection('logs').doc();
 
   static Stream<LogsRecord> getDocument(DocumentReference ref) => ref
       .snapshots()
@@ -47,19 +51,17 @@ abstract class LogsRecord implements Built<LogsRecord, LogsRecordBuilder> {
 }
 
 Map<String, dynamic> createLogsRecordData({
-  String? action,
-  String? thingId,
-  DateTime? timestamp,
-  String? userId,
+  String? message,
+  DateTime? timeOfChange,
+  String? user,
 }) {
   final firestoreData = serializers.toFirestore(
     LogsRecord.serializer,
     LogsRecord(
       (l) => l
-        ..action = action
-        ..thingId = thingId
-        ..timestamp = timestamp
-        ..userId = userId,
+        ..message = message
+        ..timeOfChange = timeOfChange
+        ..user = user,
     ),
   );
 

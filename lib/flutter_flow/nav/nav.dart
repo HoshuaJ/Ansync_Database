@@ -6,7 +6,7 @@ import 'package:page_transition/page_transition.dart';
 import '../flutter_flow_theme.dart';
 import '../../backend/backend.dart';
 
-import '../../auth/firebase_user_provider.dart';
+import '../../auth/base_auth_user_provider.dart';
 
 import '../../index.dart';
 import '../../main.dart';
@@ -20,8 +20,8 @@ export 'serialization_util.dart';
 const kTransitionInfoKey = '__transition_info__';
 
 class AppStateNotifier extends ChangeNotifier {
-  AnsyncLabsDatabaseVersion1FirebaseUser? initialUser;
-  AnsyncLabsDatabaseVersion1FirebaseUser? user;
+  BaseAuthUser? initialUser;
+  BaseAuthUser? user;
   bool showSplashImage = true;
   String? _redirectLocation;
 
@@ -46,7 +46,7 @@ class AppStateNotifier extends ChangeNotifier {
   /// to perform subsequent actions (such as navigation) afterwards.
   void updateNotifyOnAuthChange(bool notify) => notifyOnAuthChange = notify;
 
-  void update(AnsyncLabsDatabaseVersion1FirebaseUser newUser) {
+  void update(BaseAuthUser newUser) {
     initialUser ??= newUser;
     user = newUser;
     // Refresh the app on auth change unless explicitly marked otherwise.
@@ -69,19 +69,14 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
       debugLogDiagnostics: true,
       refreshListenable: appStateNotifier,
       errorBuilder: (context, _) =>
-          appStateNotifier.loggedIn ? NavBarPage() : TestpageWidget(),
+          appStateNotifier.loggedIn ? NavBarPage() : LoginPageWidget(),
       routes: [
         FFRoute(
           name: '_initialize',
           path: '/',
           builder: (context, _) =>
-              appStateNotifier.loggedIn ? NavBarPage() : TestpageWidget(),
+              appStateNotifier.loggedIn ? NavBarPage() : LoginPageWidget(),
           routes: [
-            FFRoute(
-              name: 'Testpage',
-              path: 'testpage',
-              builder: (context, params) => TestpageWidget(),
-            ),
             FFRoute(
               name: 'LoginPage',
               path: 'loginPage',
@@ -105,16 +100,6 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
                     ),
             ),
             FFRoute(
-              name: 'ThingPage',
-              path: 'ObjectPage',
-              asyncParams: {
-                'thing': getDoc(['things'], ThingsRecord.serializer),
-              },
-              builder: (context, params) => ThingPageWidget(
-                thing: params.getParam('thing', ParamType.Document),
-              ),
-            ),
-            FFRoute(
               name: 'Type_ChoiceCopy',
               path: 'typeChoiceCopy',
               builder: (context, params) => TypeChoiceCopyWidget(
@@ -124,110 +109,224 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               ),
             ),
             FFRoute(
-              name: 'Admin',
-              path: 'Admin',
-              asyncParams: {
-                'currentState': getDoc(['types', 'variableStates'],
-                    VariableStatesRecord.serializer),
-                'currentType': getDoc(['types'], TypesRecord.serializer),
-              },
-              builder: (context, params) => AdminWidget(
-                currentState:
-                    params.getParam('currentState', ParamType.Document),
-                enteredName: params.getParam('enteredName', ParamType.String),
-                currentType: params.getParam('currentType', ParamType.Document),
-              ),
-            ),
-            FFRoute(
-              name: 'ThingPageCopy',
-              path: 'ThingPageCopy',
-              asyncParams: {
-                'thingToDisplay': getDoc(['things'], ThingsRecord.serializer),
-              },
-              builder: (context, params) => ThingPageCopyWidget(
-                thingToDisplay:
-                    params.getParam('thingToDisplay', ParamType.Document),
-              ),
-            ),
-            FFRoute(
-              name: 'TypeCreatorCopy',
-              path: 'typeCreatorCopy',
+              name: 'MytypeNewType',
+              path: 'mytypeNewType',
               builder: (context, params) => params.isEmpty
-                  ? NavBarPage(initialPage: 'TypeCreatorCopy')
-                  : TypeCreatorCopyWidget(
+                  ? NavBarPage(initialPage: 'MytypeNewType')
+                  : MytypeNewTypeWidget(
                       newType: params.getParam('newType',
                           ParamType.DocumentReference, false, ['types']),
                     ),
             ),
             FFRoute(
-              name: 'TypeCreatorCopyCopy',
-              path: 'typeCreatorCopyCopy',
-              builder: (context, params) => params.isEmpty
-                  ? NavBarPage(initialPage: 'TypeCreatorCopyCopy')
-                  : TypeCreatorCopyCopyWidget(),
+              name: 'ThingPagePreExisting',
+              path: 'ObjectPage',
+              asyncParams: {
+                'thing': getDoc(['things'], ThingsRecord.serializer),
+              },
+              builder: (context, params) => ThingPagePreExistingWidget(
+                thing: params.getParam('thing', ParamType.Document),
+              ),
             ),
             FFRoute(
-              name: 'AdminCopy',
+              name: 'TypeCreation',
               path: 'AdminCopy',
               asyncParams: {
                 'newType': getDoc(['types'], TypesRecord.serializer),
               },
-              builder: (context, params) => AdminCopyWidget(
+              builder: (context, params) => TypeCreationWidget(
                 newType: params.getParam('newType', ParamType.Document),
                 enteredName: params.getParam('enteredName', ParamType.String),
               ),
             ),
             FFRoute(
-              name: 'AdminCopyCopy',
+              name: 'TypeEditortypes',
+              path: 'typeEditortypes',
+              builder: (context, params) => TypeEditortypesWidget(),
+            ),
+            FFRoute(
+              name: 'TypeEditor',
               path: 'AdminCopyCopy',
               asyncParams: {
-                'existingType': getDoc(['types'], TypesRecord.serializer),
+                'currentType': getDoc(['types'], TypesRecord.serializer),
               },
-              builder: (context, params) => AdminCopyCopyWidget(
+              builder: (context, params) => TypeEditorWidget(
                 enteredName: params.getParam('enteredName', ParamType.String),
-                existingType:
-                    params.getParam('existingType', ParamType.Document),
+                currentType: params.getParam('currentType', ParamType.Document),
               ),
             ),
             FFRoute(
-              name: 'TypeCreatorCopyCopyCopy',
-              path: 'typeCreatorCopyCopyCopy',
+              name: 'ActionSelectionFromEditor',
+              path: 'actionSelectionFromEditor',
               asyncParams: {
                 'currentType': getDoc(['types'], TypesRecord.serializer),
               },
-              builder: (context, params) => params.isEmpty
-                  ? NavBarPage(initialPage: 'TypeCreatorCopyCopyCopy')
-                  : TypeCreatorCopyCopyCopyWidget(
-                      currentType:
-                          params.getParam('currentType', ParamType.Document),
-                    ),
-            ),
-            FFRoute(
-              name: 'TypeCreatorCopyCopyCopyCopy',
-              path: 'typeCreatorCopyCopyCopyCopy',
-              asyncParams: {
-                'currentType': getDoc(['types'], TypesRecord.serializer),
-              },
-              builder: (context, params) => params.isEmpty
-                  ? NavBarPage(initialPage: 'TypeCreatorCopyCopyCopyCopy')
-                  : TypeCreatorCopyCopyCopyCopyWidget(
-                      currentType:
-                          params.getParam('currentType', ParamType.Document),
-                    ),
-            ),
-            FFRoute(
-              name: 'AdminCopy2',
-              path: 'AdminCopy2',
-              asyncParams: {
-                'currentState': getDoc(['types', 'variableStates'],
-                    VariableStatesRecord.serializer),
-                'currentType': getDoc(['types'], TypesRecord.serializer),
-              },
-              builder: (context, params) => AdminCopy2Widget(
-                currentState:
-                    params.getParam('currentState', ParamType.Document),
-                enteredName: params.getParam('enteredName', ParamType.String),
+              builder: (context, params) => ActionSelectionFromEditorWidget(
                 currentType: params.getParam('currentType', ParamType.Document),
+              ),
+            ),
+            FFRoute(
+              name: 'GroupUserChoiceFromEditor',
+              path: 'groupUserChoiceFromEditor',
+              asyncParams: {
+                'currentGroup':
+                    getDoc(['types', 'groups'], GroupsRecord.serializer),
+                'currentType': getDoc(['types'], TypesRecord.serializer),
+              },
+              builder: (context, params) => GroupUserChoiceFromEditorWidget(
+                currentGroup:
+                    params.getParam('currentGroup', ParamType.Document),
+                currentType: params.getParam('currentType', ParamType.Document),
+              ),
+            ),
+            FFRoute(
+              name: 'StateEditorFromCreation',
+              path: 'stateEditorFromCreation',
+              asyncParams: {
+                'currentAction':
+                    getDoc(['types', 'actions'], ActionsRecord.serializer),
+                'currentType': getDoc(['types'], TypesRecord.serializer),
+              },
+              builder: (context, params) => StateEditorFromCreationWidget(
+                currentAction:
+                    params.getParam('currentAction', ParamType.Document),
+                currentType: params.getParam('currentType', ParamType.Document),
+              ),
+            ),
+            FFRoute(
+              name: 'ActionEditorFromEditor',
+              path: 'actionEditorFromEditor',
+              asyncParams: {
+                'currentAction':
+                    getDoc(['types', 'actions'], ActionsRecord.serializer),
+                'currentType': getDoc(['types'], TypesRecord.serializer),
+              },
+              builder: (context, params) => ActionEditorFromEditorWidget(
+                currentAction:
+                    params.getParam('currentAction', ParamType.Document),
+                currentType: params.getParam('currentType', ParamType.Document),
+              ),
+            ),
+            FFRoute(
+              name: 'GroupEditFromEditor',
+              path: 'groupEditFromEditor',
+              asyncParams: {
+                'currentType': getDoc(['types'], TypesRecord.serializer),
+              },
+              builder: (context, params) => GroupEditFromEditorWidget(
+                currentType: params.getParam('currentType', ParamType.Document),
+              ),
+            ),
+            FFRoute(
+              name: 'GroupEditFromCreation',
+              path: 'groupEditFromCreation',
+              asyncParams: {
+                'currentType': getDoc(['types'], TypesRecord.serializer),
+              },
+              builder: (context, params) => GroupEditFromCreationWidget(
+                currentType: params.getParam('currentType', ParamType.Document),
+              ),
+            ),
+            FFRoute(
+              name: 'ActionEditorFromCreation',
+              path: 'actionEditorFromCreation',
+              asyncParams: {
+                'currentAction':
+                    getDoc(['types', 'actions'], ActionsRecord.serializer),
+                'currentType': getDoc(['types'], TypesRecord.serializer),
+              },
+              builder: (context, params) => ActionEditorFromCreationWidget(
+                currentAction:
+                    params.getParam('currentAction', ParamType.Document),
+                currentType: params.getParam('currentType', ParamType.Document),
+              ),
+            ),
+            FFRoute(
+              name: 'ActionSelectionFromCreation',
+              path: 'actionSelectionFromCreation',
+              asyncParams: {
+                'currentType': getDoc(['types'], TypesRecord.serializer),
+              },
+              builder: (context, params) => ActionSelectionFromCreationWidget(
+                currentType: params.getParam('currentType', ParamType.Document),
+              ),
+            ),
+            FFRoute(
+              name: 'GroupUserChoiceFromCreation',
+              path: 'groupUserChoiceFromCreation',
+              asyncParams: {
+                'currentGroup':
+                    getDoc(['types', 'groups'], GroupsRecord.serializer),
+                'currentType': getDoc(['types'], TypesRecord.serializer),
+              },
+              builder: (context, params) => GroupUserChoiceFromCreationWidget(
+                currentGroup:
+                    params.getParam('currentGroup', ParamType.Document),
+                currentType: params.getParam('currentType', ParamType.Document),
+              ),
+            ),
+            FFRoute(
+              name: 'StateEditorFromEditor',
+              path: 'stateEditorFromEditor',
+              asyncParams: {
+                'currentAction':
+                    getDoc(['types', 'actions'], ActionsRecord.serializer),
+                'currentType': getDoc(['types'], TypesRecord.serializer),
+              },
+              builder: (context, params) => StateEditorFromEditorWidget(
+                currentAction:
+                    params.getParam('currentAction', ParamType.Document),
+                currentType: params.getParam('currentType', ParamType.Document),
+              ),
+            ),
+            FFRoute(
+              name: 'LogPageFromPreExisting',
+              path: 'logPageFromPreExisting',
+              asyncParams: {
+                'thing': getDoc(['things'], ThingsRecord.serializer),
+              },
+              builder: (context, params) => LogPageFromPreExistingWidget(
+                thing: params.getParam('thing', ParamType.Document),
+              ),
+            ),
+            FFRoute(
+              name: 'ThingPageNew',
+              path: 'ThingPageNew',
+              asyncParams: {
+                'thing': getDoc(['things'], ThingsRecord.serializer),
+              },
+              builder: (context, params) => ThingPageNewWidget(
+                thing: params.getParam('thing', ParamType.Document),
+              ),
+            ),
+            FFRoute(
+              name: 'LogPageFromNew',
+              path: 'logPageFromNew',
+              asyncParams: {
+                'thing': getDoc(['things'], ThingsRecord.serializer),
+              },
+              builder: (context, params) => LogPageFromNewWidget(
+                thing: params.getParam('thing', ParamType.Document),
+              ),
+            ),
+            FFRoute(
+              name: 'CustomLogEntryFromNew',
+              path: 'customLogEntryFromNew',
+              asyncParams: {
+                'thing': getDoc(['things'], ThingsRecord.serializer),
+              },
+              builder: (context, params) => CustomLogEntryFromNewWidget(
+                thing: params.getParam('thing', ParamType.Document),
+              ),
+            ),
+            FFRoute(
+              name: 'CustomLogEntryFromPreExisting',
+              path: 'customLogEntryFromPreExisting',
+              asyncParams: {
+                'thing': getDoc(['things'], ThingsRecord.serializer),
+              },
+              builder: (context, params) => CustomLogEntryFromPreExistingWidget(
+                thing: params.getParam('thing', ParamType.Document),
               ),
             )
           ].map((r) => r.toRoute(appStateNotifier)).toList(),
@@ -399,7 +498,7 @@ class FFRoute {
 
           if (requireAuth && !appStateNotifier.loggedIn) {
             appStateNotifier.setRedirectLocationIfUnset(state.location);
-            return '/testpage';
+            return '/loginPage';
           }
           return null;
         },
@@ -417,7 +516,7 @@ class FFRoute {
                     width: 50.0,
                     height: 50.0,
                     child: CircularProgressIndicator(
-                      color: FlutterFlowTheme.of(context).primaryColor,
+                      color: FlutterFlowTheme.of(context).primary,
                     ),
                   ),
                 )

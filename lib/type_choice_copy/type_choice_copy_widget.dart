@@ -1,6 +1,7 @@
-import '/auth/auth_util.dart';
+import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
 import '/flutter_flow/flutter_flow_drop_down.dart';
+import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
@@ -52,12 +53,111 @@ class _TypeChoiceCopyWidgetState extends State<TypeChoiceCopyWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      key: scaffoldKey,
-      backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
-      body: SafeArea(
-        child: GestureDetector(
-          onTap: () => FocusScope.of(context).requestFocus(_unfocusNode),
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).requestFocus(_unfocusNode),
+      child: Scaffold(
+        key: scaffoldKey,
+        backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(120.0),
+          child: AppBar(
+            backgroundColor: Color(0xC345D239),
+            automaticallyImplyLeading: false,
+            actions: [],
+            flexibleSpace: FlexibleSpaceBar(
+              title: Column(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Align(
+                    alignment: AlignmentDirectional(0.0, -0.2),
+                    child: Padding(
+                      padding:
+                          EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 8.0),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          Padding(
+                            padding: EdgeInsetsDirectional.fromSTEB(
+                                12.0, 5.0, 0.0, 0.0),
+                            child: FlutterFlowIconButton(
+                              borderColor: Colors.transparent,
+                              borderRadius: 30.0,
+                              borderWidth: 1.0,
+                              buttonSize: 50.0,
+                              icon: Icon(
+                                Icons.arrow_back_rounded,
+                                color: Colors.black,
+                                size: 30.0,
+                              ),
+                              onPressed: () async {
+                                context.pushNamed('HomePage');
+                              },
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsetsDirectional.fromSTEB(
+                                4.0, 5.0, 0.0, 0.0),
+                            child: Text(
+                              'Back',
+                              style: FlutterFlowTheme.of(context)
+                                  .headlineMedium
+                                  .override(
+                                    fontFamily: 'Poppins',
+                                    color: Colors.black,
+                                    fontSize: 18.0,
+                                  ),
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsetsDirectional.fromSTEB(
+                                20.0, 5.0, 0.0, 0.0),
+                            child: Image.asset(
+                              'assets/images/logoedit.png',
+                              width: 50.0,
+                              height: 50.0,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsetsDirectional.fromSTEB(
+                                0.0, 5.0, 0.0, 0.0),
+                            child: Text(
+                              'Ansync Labs ',
+                              style: FlutterFlowTheme.of(context)
+                                  .bodyMedium
+                                  .override(
+                                    fontFamily: 'Poppins',
+                                    color: Colors.black,
+                                    fontSize: 20.0,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Align(
+                    alignment: AlignmentDirectional(0.0, 0.0),
+                    child: Text(
+                      'Thing Definer',
+                      style: FlutterFlowTheme.of(context).bodyMedium.override(
+                            fontFamily: 'Poppins',
+                            fontSize: 25.0,
+                          ),
+                    ),
+                  ),
+                ],
+              ),
+              centerTitle: true,
+              expandedTitleScale: 1.0,
+            ),
+            elevation: 2.0,
+          ),
+        ),
+        body: SafeArea(
           child: Align(
             alignment: AlignmentDirectional(0.0, 0.0),
             child: Container(
@@ -69,41 +169,7 @@ class _TypeChoiceCopyWidgetState extends State<TypeChoiceCopyWidget> {
               child: Stack(
                 children: [
                   Align(
-                    alignment: AlignmentDirectional(0.0, -0.92),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        Image.asset(
-                          'assets/images/logoedit.png',
-                          width: 100.0,
-                          height: 100.0,
-                          fit: BoxFit.cover,
-                        ),
-                        Text(
-                          'Ansync Labs',
-                          style:
-                              FlutterFlowTheme.of(context).bodyText1.override(
-                                    fontFamily: 'Poppins',
-                                    color: Colors.black,
-                                    fontSize: 43.0,
-                                  ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Align(
-                    alignment: AlignmentDirectional(-0.08, -0.7),
-                    child: Text(
-                      'Research & Development | Product Design | On Site Manufacturing',
-                      style: FlutterFlowTheme.of(context).bodyText1.override(
-                            fontFamily: 'Poppins',
-                            color: Colors.black,
-                            fontSize: 11.0,
-                          ),
-                    ),
-                  ),
-                  Align(
-                    alignment: AlignmentDirectional(0.02, -0.19),
+                    alignment: AlignmentDirectional(0.02, -0.55),
                     child: StreamBuilder<List<TypesRecord>>(
                       stream: queryTypesRecord(),
                       builder: (context, snapshot) {
@@ -114,8 +180,7 @@ class _TypeChoiceCopyWidgetState extends State<TypeChoiceCopyWidget> {
                               width: 50.0,
                               height: 50.0,
                               child: CircularProgressIndicator(
-                                color:
-                                    FlutterFlowTheme.of(context).primaryColor,
+                                color: FlutterFlowTheme.of(context).primary,
                               ),
                             ),
                           );
@@ -123,7 +188,7 @@ class _TypeChoiceCopyWidgetState extends State<TypeChoiceCopyWidget> {
                         List<TypesRecord> dropDownTypesRecordList =
                             snapshot.data!;
                         return FlutterFlowDropDown<String>(
-                          controller: _model.dropDownController ??=
+                          controller: _model.dropDownValueController ??=
                               FormFieldController<String>(null),
                           options: dropDownTypesRecordList
                               .map((e) => e.typeName)
@@ -133,14 +198,14 @@ class _TypeChoiceCopyWidgetState extends State<TypeChoiceCopyWidget> {
                           onChanged: (val) async {
                             setState(() => _model.dropDownValue = val);
                             setState(() {
-                              _model.dropDownController?.value =
+                              _model.dropDownValueController?.value =
                                   widget.typeChosen!;
                             });
                           },
                           width: 180.0,
                           height: 50.0,
                           textStyle:
-                              FlutterFlowTheme.of(context).bodyText1.override(
+                              FlutterFlowTheme.of(context).bodyMedium.override(
                                     fontFamily: 'Poppins',
                                     color: Colors.black,
                                   ),
@@ -159,11 +224,11 @@ class _TypeChoiceCopyWidgetState extends State<TypeChoiceCopyWidget> {
                     ),
                   ),
                   Align(
-                    alignment: AlignmentDirectional(0.01, -0.32),
+                    alignment: AlignmentDirectional(0.01, -0.8),
                     child: Text(
                       'Choose Type',
                       textAlign: TextAlign.center,
-                      style: FlutterFlowTheme.of(context).bodyText1.override(
+                      style: FlutterFlowTheme.of(context).bodyMedium.override(
                             fontFamily: 'Poppins',
                             color: Colors.black,
                             fontSize: 20.0,
@@ -171,7 +236,7 @@ class _TypeChoiceCopyWidgetState extends State<TypeChoiceCopyWidget> {
                     ),
                   ),
                   Align(
-                    alignment: AlignmentDirectional(0.0, 0.21),
+                    alignment: AlignmentDirectional(0.0, 0.0),
                     child: TextFormField(
                       controller: _model.textController,
                       autofocus: true,
@@ -179,7 +244,7 @@ class _TypeChoiceCopyWidgetState extends State<TypeChoiceCopyWidget> {
                       decoration: InputDecoration(
                         hintText: '{Thing Name}',
                         hintStyle:
-                            FlutterFlowTheme.of(context).bodyText2.override(
+                            FlutterFlowTheme.of(context).bodySmall.override(
                                   fontFamily: 'Poppins',
                                   color: Colors.black,
                                 ),
@@ -224,7 +289,7 @@ class _TypeChoiceCopyWidgetState extends State<TypeChoiceCopyWidget> {
                           ),
                         ),
                       ),
-                      style: FlutterFlowTheme.of(context).bodyText1.override(
+                      style: FlutterFlowTheme.of(context).bodyMedium.override(
                             fontFamily: 'Poppins',
                             color: Colors.black,
                           ),
@@ -234,10 +299,10 @@ class _TypeChoiceCopyWidgetState extends State<TypeChoiceCopyWidget> {
                     ),
                   ),
                   Align(
-                    alignment: AlignmentDirectional(0.04, 0.09),
+                    alignment: AlignmentDirectional(0.04, -0.25),
                     child: Text(
                       'Enter Thing Name',
-                      style: FlutterFlowTheme.of(context).bodyText1.override(
+                      style: FlutterFlowTheme.of(context).bodyMedium.override(
                             fontFamily: 'Poppins',
                             color: Colors.black,
                             fontSize: 20.0,
@@ -245,14 +310,18 @@ class _TypeChoiceCopyWidgetState extends State<TypeChoiceCopyWidget> {
                     ),
                   ),
                   Align(
-                    alignment: AlignmentDirectional(0.02, 0.54),
+                    alignment: AlignmentDirectional(0.02, 0.45),
                     child: FFButtonWidget(
                       onPressed: () async {
-                        final thingsCreateData = createThingsRecordData(
-                          typeId: _model.dropDownValue,
-                          thingName: _model.textController.text,
-                          codeID: widget.scannedID,
-                        );
+                        final thingsCreateData = {
+                          ...createThingsRecordData(
+                            typeId: _model.dropDownValue,
+                            thingName: _model.textController.text,
+                            codeID: widget.scannedID,
+                          ),
+                          'initDate': FieldValue.serverTimestamp(),
+                          'states': ['New'],
+                        };
                         var thingsRecordReference =
                             ThingsRecord.collection.doc();
                         await thingsRecordReference.set(thingsCreateData);
@@ -260,7 +329,7 @@ class _TypeChoiceCopyWidgetState extends State<TypeChoiceCopyWidget> {
                             thingsCreateData, thingsRecordReference);
 
                         context.pushNamed(
-                          'ThingPage',
+                          'ThingPageNew',
                           queryParams: {
                             'thing': serializeParam(
                               _model.newThing,
@@ -282,37 +351,18 @@ class _TypeChoiceCopyWidgetState extends State<TypeChoiceCopyWidget> {
                             EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
                         iconPadding:
                             EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
-                        color: Color(0x00F4F4F4),
+                        color: Color(0xFF4B39EF),
                         textStyle:
-                            FlutterFlowTheme.of(context).subtitle2.override(
+                            FlutterFlowTheme.of(context).titleSmall.override(
                                   fontFamily: 'Poppins',
-                                  color: Colors.black,
+                                  color: Colors.white,
                                 ),
+                        elevation: 2.0,
                         borderSide: BorderSide(
                           color: Colors.black,
                           width: 3.0,
                         ),
                         borderRadius: BorderRadius.circular(8.0),
-                      ),
-                    ),
-                  ),
-                  Align(
-                    alignment: AlignmentDirectional(-0.95, -1.0),
-                    child: Padding(
-                      padding:
-                          EdgeInsetsDirectional.fromSTEB(4.0, 5.0, 0.0, 0.0),
-                      child: InkWell(
-                        onTap: () async {
-                          context.pushNamed('QR_Scanner');
-                        },
-                        child: Text(
-                          'Back',
-                          style: FlutterFlowTheme.of(context).title2.override(
-                                fontFamily: 'Poppins',
-                                color: Colors.black,
-                                fontSize: 18.0,
-                              ),
-                        ),
                       ),
                     ),
                   ),

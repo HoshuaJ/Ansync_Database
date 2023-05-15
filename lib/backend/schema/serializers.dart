@@ -2,10 +2,11 @@ import 'package:built_value/standard_json_plugin.dart';
 import 'package:from_css_color/from_css_color.dart';
 
 import 'users_record.dart';
-import 'logs_record.dart';
 import 'things_record.dart';
 import 'types_record.dart';
-import 'variable_states_record.dart';
+import 'logs_record.dart';
+import 'actions_record.dart';
+import 'groups_record.dart';
 
 import 'index.dart';
 
@@ -17,11 +18,12 @@ const kDocumentReferenceField = 'Document__Reference__Field';
 
 @SerializersFor(const [
   UsersRecord,
-  LogsRecord,
   ThingsRecord,
   TypesRecord,
-  VariableStatesRecord,
-  VariableStateStruct,
+  LogsRecord,
+  ActionsRecord,
+  GroupsRecord,
+  CommandsStruct,
 ])
 final Serializers serializers = (_$serializers.toBuilder()
       ..add(DocumentReferenceSerializer())
@@ -206,6 +208,9 @@ Map<String, dynamic> mapToFirestore(Map<String, dynamic> data) =>
       }
       return MapEntry(key, value);
     });
+
+List<GeoPoint>? convertToGeoPointList(List<LatLng>? list) =>
+    list?.map((e) => e.toGeoPoint()).toList();
 
 extension GeoPointExtension on LatLng {
   GeoPoint toGeoPoint() => GeoPoint(latitude, longitude);

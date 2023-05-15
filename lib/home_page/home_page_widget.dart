@@ -1,4 +1,4 @@
-import '/auth/auth_util.dart';
+import '/auth/firebase_auth/auth_util.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
@@ -37,12 +37,12 @@ class _HomePageWidgetState extends State<HomePageWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      key: scaffoldKey,
-      backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
-      body: SafeArea(
-        child: GestureDetector(
-          onTap: () => FocusScope.of(context).requestFocus(_unfocusNode),
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).requestFocus(_unfocusNode),
+      child: Scaffold(
+        key: scaffoldKey,
+        backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
+        body: SafeArea(
           child: Stack(
             children: [
               Align(
@@ -73,7 +73,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                     ),
                     Text(
                       'Ansync Labs',
-                      style: FlutterFlowTheme.of(context).bodyText1.override(
+                      style: FlutterFlowTheme.of(context).bodyMedium.override(
                             fontFamily: 'Poppins',
                             color: Colors.black,
                             fontSize: 43.0,
@@ -86,7 +86,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                 alignment: AlignmentDirectional(-0.28, -0.68),
                 child: Text(
                   'Research & Development | Product Design | On Site Manufacturing',
-                  style: FlutterFlowTheme.of(context).bodyText1.override(
+                  style: FlutterFlowTheme.of(context).bodyMedium.override(
                         fontFamily: 'Poppins',
                         color: Colors.black,
                         fontSize: 11.0,
@@ -94,7 +94,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                 ),
               ),
               Align(
-                alignment: AlignmentDirectional(0.06, -0.16),
+                alignment: AlignmentDirectional(0.0, -0.44),
                 child: FFButtonWidget(
                   onPressed: () async {
                     context.pushNamed('QR_Scanner');
@@ -110,12 +110,13 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                     padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
                     iconPadding:
                         EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
-                    color: Color(0x00FFFFFF),
-                    textStyle: FlutterFlowTheme.of(context).subtitle2.override(
+                    color: Colors.white,
+                    textStyle: FlutterFlowTheme.of(context).titleSmall.override(
                           fontFamily: 'Poppins',
                           color: Colors.black,
                           fontSize: 40.0,
                         ),
+                    elevation: 2.0,
                     borderSide: BorderSide(
                       color: Colors.black,
                       width: 5.0,
@@ -125,10 +126,10 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                 ),
               ),
               Align(
-                alignment: AlignmentDirectional(0.0, 0.49),
+                alignment: AlignmentDirectional(0.0, -0.11),
                 child: FFButtonWidget(
                   onPressed: () async {
-                    context.pushNamed('TypeCreatorCopy');
+                    context.pushNamed('MytypeNewType');
                   },
                   text: 'Type Creator',
                   icon: Icon(
@@ -141,12 +142,13 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                     padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
                     iconPadding:
                         EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
-                    color: Color(0x00FFFFFF),
-                    textStyle: FlutterFlowTheme.of(context).subtitle2.override(
+                    color: Colors.white,
+                    textStyle: FlutterFlowTheme.of(context).titleSmall.override(
                           fontFamily: 'Poppins',
                           color: Colors.black,
                           fontSize: 40.0,
                         ),
+                    elevation: 2.0,
                     borderSide: BorderSide(
                       color: Colors.black,
                       width: 5.0,
@@ -156,14 +158,14 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                 ),
               ),
               Align(
-                alignment: AlignmentDirectional(0.0, 0.76),
+                alignment: AlignmentDirectional(-0.02, 0.87),
                 child: FFButtonWidget(
                   onPressed: () async {
                     GoRouter.of(context).prepareAuthEvent();
-                    await signOut();
+                    await authManager.signOut();
                     GoRouter.of(context).clearRedirectLocation();
 
-                    context.goNamedAuth('Testpage', mounted);
+                    context.goNamedAuth('LoginPage', mounted);
                   },
                   text: 'Logout',
                   options: FFButtonOptions(
@@ -172,11 +174,12 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                     padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
                     iconPadding:
                         EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
-                    color: Color(0x9AFFFFFF),
-                    textStyle: FlutterFlowTheme.of(context).subtitle2.override(
+                    color: Color(0xFF4B39EF),
+                    textStyle: FlutterFlowTheme.of(context).titleSmall.override(
                           fontFamily: 'Poppins',
-                          color: Colors.black,
+                          color: Colors.white,
                         ),
+                    elevation: 2.0,
                     borderSide: BorderSide(
                       color: Colors.black,
                       width: 3.0,

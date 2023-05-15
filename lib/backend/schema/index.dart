@@ -4,4 +4,4 @@ export 'package:built_collection/built_collection.dart';
 export 'package:flutter/material.dart' show Color, Colors;
 export '../../flutter_flow/lat_lng.dart';
 
-export 'structs/variable_state_struct.dart';
+export 'structs/commands_struct.dart';

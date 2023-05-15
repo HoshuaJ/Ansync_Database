@@ -20,13 +20,6 @@ class _$ThingsRecordSerializer implements StructuredSerializer<ThingsRecord> {
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object?>[];
     Object? value;
-    value = object.state;
-    if (value != null) {
-      result
-        ..add('state')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(String)));
-    }
     value = object.typeId;
     if (value != null) {
       result
@@ -47,6 +40,21 @@ class _$ThingsRecordSerializer implements StructuredSerializer<ThingsRecord> {
         ..add('codeID')
         ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
+    }
+    value = object.initDate;
+    if (value != null) {
+      result
+        ..add('initDate')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(DateTime)));
+    }
+    value = object.states;
+    if (value != null) {
+      result
+        ..add('states')
+        ..add(serializers.serialize(value,
+            specifiedType:
+                const FullType(BuiltList, const [const FullType(String)])));
     }
     value = object.ffRef;
     if (value != null) {
@@ -71,10 +79,6 @@ class _$ThingsRecordSerializer implements StructuredSerializer<ThingsRecord> {
       iterator.moveNext();
       final Object? value = iterator.current;
       switch (key) {
-        case 'state':
-          result.state = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String?;
-          break;
         case 'typeId':
           result.typeId = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String?;
@@ -86,6 +90,16 @@ class _$ThingsRecordSerializer implements StructuredSerializer<ThingsRecord> {
         case 'codeID':
           result.codeID = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String?;
+          break;
+        case 'initDate':
+          result.initDate = serializers.deserialize(value,
+              specifiedType: const FullType(DateTime)) as DateTime?;
+          break;
+        case 'states':
+          result.states.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(
+                      BuiltList, const [const FullType(String)]))!
+              as BuiltList<Object?>);
           break;
         case 'Document__Reference__Field':
           result.ffRef = serializers.deserialize(value,
@@ -102,13 +116,15 @@ class _$ThingsRecordSerializer implements StructuredSerializer<ThingsRecord> {
 
 class _$ThingsRecord extends ThingsRecord {
   @override
-  final String? state;
-  @override
   final String? typeId;
   @override
   final String? thingName;
   @override
   final String? codeID;
+  @override
+  final DateTime? initDate;
+  @override
+  final BuiltList<String>? states;
   @override
   final DocumentReference<Object?>? ffRef;
 
@@ -116,7 +132,12 @@ class _$ThingsRecord extends ThingsRecord {
       (new ThingsRecordBuilder()..update(updates))._build();
 
   _$ThingsRecord._(
-      {this.state, this.typeId, this.thingName, this.codeID, this.ffRef})
+      {this.typeId,
+      this.thingName,
+      this.codeID,
+      this.initDate,
+      this.states,
+      this.ffRef})
       : super._();
 
   @override
@@ -130,20 +151,22 @@ class _$ThingsRecord extends ThingsRecord {
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
     return other is ThingsRecord &&
-        state == other.state &&
         typeId == other.typeId &&
         thingName == other.thingName &&
         codeID == other.codeID &&
+        initDate == other.initDate &&
+        states == other.states &&
         ffRef == other.ffRef;
   }
 
   @override
   int get hashCode {
     var _$hash = 0;
-    _$hash = $jc(_$hash, state.hashCode);
     _$hash = $jc(_$hash, typeId.hashCode);
     _$hash = $jc(_$hash, thingName.hashCode);
     _$hash = $jc(_$hash, codeID.hashCode);
+    _$hash = $jc(_$hash, initDate.hashCode);
+    _$hash = $jc(_$hash, states.hashCode);
     _$hash = $jc(_$hash, ffRef.hashCode);
     _$hash = $jf(_$hash);
     return _$hash;
@@ -152,10 +175,11 @@ class _$ThingsRecord extends ThingsRecord {
   @override
   String toString() {
     return (newBuiltValueToStringHelper(r'ThingsRecord')
-          ..add('state', state)
           ..add('typeId', typeId)
           ..add('thingName', thingName)
           ..add('codeID', codeID)
+          ..add('initDate', initDate)
+          ..add('states', states)
           ..add('ffRef', ffRef))
         .toString();
   }
@@ -164,10 +188,6 @@ class _$ThingsRecord extends ThingsRecord {
 class ThingsRecordBuilder
     implements Builder<ThingsRecord, ThingsRecordBuilder> {
   _$ThingsRecord? _$v;
-
-  String? _state;
-  String? get state => _$this._state;
-  set state(String? state) => _$this._state = state;
 
   String? _typeId;
   String? get typeId => _$this._typeId;
@@ -181,6 +201,15 @@ class ThingsRecordBuilder
   String? get codeID => _$this._codeID;
   set codeID(String? codeID) => _$this._codeID = codeID;
 
+  DateTime? _initDate;
+  DateTime? get initDate => _$this._initDate;
+  set initDate(DateTime? initDate) => _$this._initDate = initDate;
+
+  ListBuilder<String>? _states;
+  ListBuilder<String> get states =>
+      _$this._states ??= new ListBuilder<String>();
+  set states(ListBuilder<String>? states) => _$this._states = states;
+
   DocumentReference<Object?>? _ffRef;
   DocumentReference<Object?>? get ffRef => _$this._ffRef;
   set ffRef(DocumentReference<Object?>? ffRef) => _$this._ffRef = ffRef;
@@ -192,10 +221,11 @@ class ThingsRecordBuilder
   ThingsRecordBuilder get _$this {
     final $v = _$v;
     if ($v != null) {
-      _state = $v.state;
       _typeId = $v.typeId;
       _thingName = $v.thingName;
       _codeID = $v.codeID;
+      _initDate = $v.initDate;
+      _states = $v.states?.toBuilder();
       _ffRef = $v.ffRef;
       _$v = null;
     }
@@ -217,13 +247,27 @@ class ThingsRecordBuilder
   ThingsRecord build() => _build();
 
   _$ThingsRecord _build() {
-    final _$result = _$v ??
-        new _$ThingsRecord._(
-            state: state,
-            typeId: typeId,
-            thingName: thingName,
-            codeID: codeID,
-            ffRef: ffRef);
+    _$ThingsRecord _$result;
+    try {
+      _$result = _$v ??
+          new _$ThingsRecord._(
+              typeId: typeId,
+              thingName: thingName,
+              codeID: codeID,
+              initDate: initDate,
+              states: _states?.build(),
+              ffRef: ffRef);
+    } catch (_) {
+      late String _$failedField;
+      try {
+        _$failedField = 'states';
+        _states?.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            r'ThingsRecord', _$failedField, e.toString());
+      }
+      rethrow;
+    }
     replace(_$result);
     return _$result;
   }
